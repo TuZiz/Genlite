@@ -27,6 +27,7 @@ final class LegacyMachines {
         }
         copy(old,next,"upgrades","upgrades");
         dest.set("materials-version",1);
+        dest.set("item-names-version",null);
         if(!collector) dest.set("upgrade-item-version",null);
         if(id.equals("resource_collector")) dest.set("storage-version",1);
         dest.options().setHeader(java.util.List.of("从 machines.yml 迁移；原文件及其中文注释和未知字段均已保留，后续只读取 genlite/。"));

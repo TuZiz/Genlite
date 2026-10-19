@@ -15,7 +15,7 @@ class MachineConfigurationsTest {
     @Test void freshInstallCreatesFiveFlatFilesAndUsesIndependentRules() throws Exception {
         load();assertFalse(Files.exists(root.resolve("machines.yml")));
         try(var files=Files.list(root.resolve("genlite"))) {assertEquals(4,files.filter(Files::isRegularFile).count());}
-        Path path=root.resolve("genlite/iron_generator.yml");
+        Path path=root.resolve("genlite/铁生成器.yml");
         var y=new YamlConfiguration();y.load(path.toFile());
         y.set("levels.1.interval-seconds",9);y.set("fuel.units-per-item",9);y.set("upgrades.2.minecraft:oak_log",23);y.save(path.toFile());
         var rules=load().rules();var iron=machine("iron_generator");var cobble=machine("cobblestone_generator");
@@ -45,17 +45,17 @@ class MachineConfigurationsTest {
         try(var paths=Files.list(root)) {assertEquals(1,paths.count());}
     }
     @Test void invalidNewFileReportsPathAndLeavesUserTextIntact() throws Exception {
-        load();Path file=root.resolve("genlite/resource_collector.yml");
+        load();Path file=root.resolve("genlite/普通收集器.yml");
         String invalid=Files.readString(file).replaceAll("height: [^\\r\\n]+","height: .nan");Files.writeString(file,invalid);
         var error=assertThrows(IllegalArgumentException.class,this::load);
-        assertTrue(error.getMessage().contains("genlite/resource_collector.yml:hologram.height="));
+        assertTrue(error.getMessage().contains("genlite/普通收集器.yml:hologram.height="));
         assertEquals(invalid,Files.readString(file));
     }
     @Test void duplicateUnknownOrMissingDefinitionsAreNotSilentlyIgnored() throws Exception {
         load();Path duplicate=root.resolve("genlite/duplicate.yml");
-        Files.copy(root.resolve("genlite/iron_generator.yml"),duplicate);
+        Files.copy(root.resolve("genlite/铁生成器.yml"),duplicate);
         assertThrows(IllegalArgumentException.class,this::load);Files.delete(duplicate);
-        Files.delete(root.resolve("genlite/iron_generator.yml"));
+        Files.delete(root.resolve("genlite/铁生成器.yml"));
         assertThrows(IllegalArgumentException.class,this::load);
     }
     @Test void oldClassifiedDirectoryIsFlattenedWithoutChangingCommentsOrUnknownFields() throws Exception {
@@ -75,10 +75,10 @@ class MachineConfigurationsTest {
         try(var files=Files.list(root.resolve("genlite"))) {assertTrue(files.allMatch(Files::isRegularFile));}
     }
     @Test void existingGenliteDirectoryTakesPrecedenceOverOldSources() throws Exception {
-        load();Path file=root.resolve("genlite/iron_generator.yml");
+        load();Path file=root.resolve("genlite/铁生成器.yml");
         String text=Files.readString(file).replace("base-value: 21","base-value: 31");Files.writeString(file,text);
         Files.createDirectories(root.resolve("machines/generators"));
-        Files.writeString(root.resolve("machines/generators/iron_generator.yml"),"invalid: legacy backup\n");
+        Files.writeString(root.resolve("machines/generators/铁生成器.yml"),"invalid: legacy backup\n");
         Files.writeString(root.resolve("machines.yml"),"invalid: older backup\n");
         assertEquals(31,load().rules().value(machine("iron_generator")));assertEquals(text,Files.readString(file));
     }

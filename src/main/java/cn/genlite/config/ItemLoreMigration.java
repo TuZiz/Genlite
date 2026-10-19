@@ -15,7 +15,7 @@ final class ItemLoreMigration {
         if(version==3) return;
         if(version!=1 && version!=2) throw doc.invalid("display.lore-version");
         var bundled=new YamlConfiguration();
-        try(var stream=ItemLoreMigration.class.getResourceAsStream("/genlite/"+type+".yml")) {
+        try(var stream=ItemLoreMigration.class.getResourceAsStream("/genlite/"+MachineConfigurations.FILES.get(type))) {
             if(stream==null) throw new IllegalStateException("Missing bundled lore: genlite/"+type+".yml");
             bundled.load(new InputStreamReader(stream,StandardCharsets.UTF_8));
         }

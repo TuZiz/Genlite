@@ -18,9 +18,11 @@ public final class GenliteCommand implements CommandExecutor,TabCompleter {
         if(args.length==1 && args[0].equalsIgnoreCase("claim")) {transfers.claim(p);return true;}
         if(args.length==1 && args[0].equalsIgnoreCase("warehouse")) {warehouse.open(p);return true;}
         if(args.length>=2 && args[0].equalsIgnoreCase("give") && p.hasPermission("genlite.admin")) {
-            String id=args[1].contains(":")?args[1]:"genlite:"+args[1];
+            String requested=args[1];
             int amount=1;
             try {
+                String id;
+                try {id=items.resolve(requested);} catch(IllegalArgumentException unknown) {id=items.resolve("genlite:"+requested);}
                 if(args.length>2) amount=Integer.parseInt(args[2]);
                 if(!id.startsWith("genlite:") || amount<1 || amount>64) throw new IllegalArgumentException();
                 if(id.equals("genlite:basic_smelter")) {messages.send(p,"unavailable");return true;}
@@ -35,7 +37,7 @@ public final class GenliteCommand implements CommandExecutor,TabCompleter {
     }
     @Override public List<String> onTabComplete(CommandSender s,Command c,String a,String[] args) {
         if(args.length==1) return s.hasPermission("genlite.admin")?List.of("warehouse","holograms","give"):List.of("warehouse","holograms");
-        if(args.length==2 && args[0].equals("give") && s.hasPermission("genlite.admin")) return java.util.stream.Stream.concat(engine.rules().types().keySet().stream(),java.util.stream.Stream.of("binding_tool","fuel","basic_upgrade_unit")).filter(x -> x.startsWith(args[1])).toList();
+        if(args.length==2 && args[0].equals("give") && s.hasPermission("genlite.admin")) return java.util.stream.Stream.concat(engine.rules().types().keySet().stream(),java.util.stream.Stream.of("binding_tool","fuel","basic_upgrade_unit")).map(x -> items.name("genlite:"+x)).filter(x -> x.startsWith(args[1])).toList();
         return List.of();
     }
 }

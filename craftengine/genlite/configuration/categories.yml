@@ -1,12 +1,12 @@
 categories:
   genlite:content:
     name: '<italic:false><#D7AF65>空岛经营'
-    icon: genlite:resource_collector
+    icon: genlite:resource_collector  # 普通收集器
     list:
-    - genlite:cobblestone_generator
-    - genlite:timber_generator
-    - genlite:iron_generator
-    - genlite:resource_collector
-    - genlite:fuel
-    - genlite:binding_tool
-    - genlite:basic_upgrade_unit
+    - genlite:cobblestone_generator  # 原石生成器
+    - genlite:timber_generator  # 木材生成器
+    - genlite:iron_generator  # 铁生成器
+    - genlite:resource_collector  # 普通收集器
+    - genlite:fuel  # 燃料
+    - genlite:binding_tool  # 绑定工具
+    - genlite:basic_upgrade_unit  # 初级升级单元

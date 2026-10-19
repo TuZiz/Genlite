@@ -12,7 +12,7 @@ class PresentationMigrationTest {
     @Test void machineUpgradePreservesCommentsCustomDataAndIsIdempotent() throws Exception {
         Path path=directory.resolve("collector.yml");
         var yaml=new YamlConfiguration();yaml.options().parseComments(true);
-        yaml.load(Path.of("src/main/resources/genlite/resource_collector.yml").toFile());
+        yaml.load(Path.of("src/main/resources/genlite/普通收集器.yml").toFile());
         yaml.set("presentation-version",null);
         yaml.set("display.name","<#89F7FE>✦ <#78FFD6><bold>资源收集器</bold> <#FFD700>[Lv.<level>]");
         yaml.set("hologram.lines",List.of("<#89F7FE>✦ <machine> <#7F8C8D>[<#FFD700>Lv.<level><#7F8C8D>]","<#123456>自定义状态"));

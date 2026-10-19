@@ -10,11 +10,11 @@ import java.util.*;
 
 /** Loaded once on the IO executor; does not save or discard user comments/unknown fields. */
 public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path storage, YamlConfiguration language,
-                          Map<String,YamlConfiguration> menus, CollectorParticleSettings collectorParticles) {
+                          Map<String,YamlConfiguration> menus, CollectorParticleSettings collectorParticles,ItemNames itemNames) {
     public static PluginFiles load(JavaPlugin plugin) throws Exception {
         Path root=plugin.getDataFolder().toPath();
         Map<String,YamlConfiguration> files=new HashMap<>();
-        for (String name : List.of("config.yml","warehouse.yml","collector-particles.yml","lang/zh_cn.yml","gui/generator.yml","gui/collector.yml","gui/warehouse.yml")) {
+        for (String name : List.of("物品名称.yml","config.yml","warehouse.yml","collector-particles.yml","lang/zh_cn.yml","gui/generator.yml","gui/collector.yml","gui/warehouse.yml")) {
             Path path=root.resolve(name); Files.createDirectories(path.getParent());
             if (!Files.exists(path)) {
                 try (InputStream in=plugin.getResource(name)) {
@@ -33,6 +33,9 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
             if (yaml.getInt("schema-version")!=expected) throw new IllegalArgumentException(name+":schema-version="+yaml.get("schema-version")+" unsupported; original preserved");
             files.put(name,yaml);
         }
+        ItemNames itemNames=ItemNames.load(root.resolve("物品名称.yml"));
+        for(String name:List.of("gui/generator.yml","gui/collector.yml","gui/warehouse.yml"))
+            ChineseItemMigration.menu(root.resolve(name),files.get(name),itemNames);
         MachineConfigurations machines=MachineConfigurations.load(root,plugin::getResource);
         String filename=files.get("config.yml").getString("storage-file");
         if (filename==null || !filename.matches("[a-zA-Z0-9_.-]+\\.json")) throw new IllegalArgumentException("config.yml:storage-file="+filename);
@@ -46,6 +49,6 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
         }
         int slots=new ConfigDocument("warehouse.yml",files.get("warehouse.yml")).integer("slots",9,45);
         if(slots%9!=0) throw new IllegalArgumentException("warehouse.yml:slots="+slots+"; expected multiple of 9");
-        return new PluginFiles(new Rules(machines.rules().types(),slots),machines.displays(),root.resolve(filename),files.get("lang/zh_cn.yml"),Map.copyOf(menus),CollectorParticleSettings.read(files.get("collector-particles.yml")));
+        return new PluginFiles(new Rules(machines.rules().types(),slots),machines.displays(),root.resolve(filename),files.get("lang/zh_cn.yml"),Map.copyOf(menus),CollectorParticleSettings.read(files.get("collector-particles.yml")),itemNames);
     }
 }

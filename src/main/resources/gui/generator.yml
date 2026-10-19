@@ -3,6 +3,7 @@
 #   顶部状态、两侧功能，底行中心关闭
 # ==========================================
 schema-version: 4
+item-names-version: 1
 presentation-version: 1
 upgrade-item-version: 1
 
@@ -63,7 +64,7 @@ elements:
     action: mode
 
   U:
-    item: genlite:basic_upgrade_unit
+    item: 初级升级单元
     name: '<#A8FF78>✦ <#78FFD6><bold>升级生成器</bold>'
     lore:
       - ''

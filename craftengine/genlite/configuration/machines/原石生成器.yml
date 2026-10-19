@@ -1,5 +1,5 @@
 items:
-  genlite:cobblestone_generator:
+  genlite:cobblestone_generator:  # 原石生成器
     # 非方块底材避免客户端预测放置时短暂显示原版方块；放置仍由 block_item 处理。
     material: paper
     data:
@@ -21,9 +21,9 @@ items:
     model: genlite:item/cobblestone_generator
     behavior:
       type: block_item
-      block: genlite:cobblestone_generator
+      block: genlite:cobblestone_generator  # 原石生成器
 blocks:
-  genlite:cobblestone_generator:
+  genlite:cobblestone_generator:  # 原石生成器
     settings:
       hardness: 3.0
       resistance: 6.0
@@ -41,7 +41,7 @@ blocks:
         - type: survives_explosion
         entries:
         - type: item
-          item: genlite:cobblestone_generator
+          item: genlite:cobblestone_generator  # 原石生成器
     states:
       properties:
         facing:

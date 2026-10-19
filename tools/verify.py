@@ -9,6 +9,9 @@ ROOT=Path(__file__).resolve().parents[1]
 PACK=ROOT/'craftengine/genlite'
 ASSETS=PACK/'resourcepack/assets/genlite'
 items={};blocks={};recipes={}
+item_names=yaml.safe_load((ROOT/'src/main/resources/物品名称.yml').read_text(encoding='utf-8'))['items']
+machine_files={'cobblestone_generator':'原石生成器','timber_generator':'木材生成器','iron_generator':'铁生成器','resource_collector':'普通收集器'}
+def item_id(value): return item_names.get(value,value)
 for path in list(PACK.rglob('*.yml'))+list((ROOT/'src/main/resources').rglob('*.yml')):
     text=path.read_text(encoding='utf-8'); assert '\t' not in text,path
     for token in yaml.scan(text):
@@ -33,7 +36,7 @@ for path in list(PACK.rglob('*.yml'))+list((ROOT/'src/main/resources').rglob('*.
             assert all(c==' ' or c in d['elements'] for c in row)
         for entry in d['elements'].values():
             assert entry.get('action')!='claim'
-            if 'item' in entry:assert entry['item'] in items
+            if 'item' in entry:assert item_id(entry['item']) in items
         if path.name in ('collector.yml','warehouse.yml'):
             assert {e.get('action') for e in d['elements'].values()}=={'stock','close'}
         if path.name=='collector.yml':
@@ -51,9 +54,9 @@ for mid in ('cobblestone_generator','timber_generator','iron_generator'):
     assert item['material']=='paper',('Client prediction requires a non-block item material',mid)
     assert item['behavior']=={'type':'block_item','block':'genlite:'+mid}
     assert item['model']=='genlite:item/'+mid
-    machine=yaml.safe_load((ROOT/'src/main/resources/genlite'/f'{mid}.yml').read_text(encoding='utf-8'))
+    machine=yaml.safe_load((ROOT/'src/main/resources/genlite'/f'{machine_files[mid]}.yml').read_text(encoding='utf-8'))
     assert machine['upgrade-item-version']==1
-    assert all(set(costs)=={'genlite:basic_upgrade_unit'} for costs in machine['upgrades'].values())
+    assert all({item_id(item) for item in costs}=={'genlite:basic_upgrade_unit'} for costs in machine['upgrades'].values())
 assert all(ingredient.startswith('minecraft:') for recipe in recipes.values() for ingredient in recipe['ingredients'].values())
 assert 'genlite:warehouse_core' not in items and 'genlite:greenhouse_controller' not in items
 for key,item in items.items():
@@ -62,7 +65,10 @@ for key,item in items.items():
     if 'model' in item:assert (ASSETS/'models'/(item['model'].split(':')[1]+'.json')).is_file()
 for key,block in blocks.items():
     states=block['states'];assert len(states['variants'])==12
-    if key!='genlite:basic_smelter':
+    if key=='genlite:resource_collector':
+        assert len({a['state'] for a in states['appearances'].values()})==12
+        assert all('half=bottom,open=false' in a['state'] for a in states['appearances'].values())
+    elif key!='genlite:basic_smelter':
         assert all(appearance['auto_state']=='non_tintable_leaves' for appearance in states['appearances'].values())
     assert states['properties']['mode']['default']==0
     for variant,value in states['variants'].items():
@@ -104,7 +110,7 @@ with zipfile.ZipFile(jar) as z:
     assert 'machines.yml' not in names
     assert not any(n.startswith('machines/') for n in names)
     assert len([n for n in names if n.startswith('genlite/') and n.endswith('.yml')])==4
-    assert all(n in names for n in ('genlite/cobblestone_generator.yml','genlite/resource_collector.yml','warehouse.yml','gui/warehouse.yml','gui/generator.yml','gui/collector.yml','lang/zh_cn.yml','plugin.yml'))
+    assert all(n in names for n in ('genlite/原石生成器.yml','genlite/普通收集器.yml','warehouse.yml','gui/warehouse.yml','gui/generator.yml','gui/collector.yml','lang/zh_cn.yml','plugin.yml'))
     assert 'gui/storage.yml' not in names
     assert not any(n.endswith(('WarehouseMenus.class','WarehouseSession.class','WarehouseActions.class')) for n in names)
 with Image.open(ASSETS/'textures/item/fuel.png') as im:

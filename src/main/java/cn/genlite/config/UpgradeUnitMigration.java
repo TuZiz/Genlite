@@ -19,7 +19,7 @@ final class UpgradeUnitMigration {
         });
         if(shipped) {
             var defaults=new YamlConfiguration();
-            try(var input=UpgradeUnitMigration.class.getResourceAsStream("/genlite/"+id+".yml")) {
+            try(var input=UpgradeUnitMigration.class.getResourceAsStream("/genlite/"+MachineConfigurations.FILES.get(id))) {
                 if(input==null) throw new IllegalStateException("Missing bundled generator: genlite/"+id+".yml");
                 defaults.load(new InputStreamReader(input,StandardCharsets.UTF_8));
             }

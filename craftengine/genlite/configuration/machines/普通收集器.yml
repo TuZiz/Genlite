@@ -1,5 +1,5 @@
 items:
-  genlite:resource_collector:
+  genlite:resource_collector:  # 普通收集器
     material: chest
     data:
       item_name: '<italic:false><#D7AF65>普通收集器[初级]'
@@ -19,9 +19,9 @@ items:
     model: genlite:item/resource_collector
     behavior:
       type: block_item
-      block: genlite:resource_collector
+      block: genlite:resource_collector  # 普通收集器
 blocks:
-  genlite:resource_collector:
+  genlite:resource_collector:  # 普通收集器
     settings:
       hardness: 3.0
       resistance: 6.0
@@ -39,7 +39,7 @@ blocks:
         - type: survives_explosion
         entries:
         - type: item
-          item: genlite:resource_collector
+          item: genlite:resource_collector  # 普通收集器
     states:
       properties:
         facing:

@@ -75,7 +75,7 @@ for name in names:
     # Explicit item model wrapper inherits full cuboid geometry and display transforms.
     item=MODELS/'item'/f'{name}.json';item.parent.mkdir(exist_ok=True)
     item.write_text(json.dumps({'parent':f'genlite:block/{name}_paused'},indent=2)+'\n',encoding='utf-8')
-    config=PACK/'configuration/machines'/f'{name}.yml';data=yaml.safe_load(config.read_text(encoding='utf-8'))
+    config=PACK/'configuration/machines'/f"{ {'cobblestone_generator':'原石生成器','timber_generator':'木材生成器','iron_generator':'铁生成器','resource_collector':'普通收集器'}.get(name,name)}.yml";data=yaml.safe_load(config.read_text(encoding='utf-8'))
     if name!='basic_smelter':
         for appearance in data['blocks']['genlite:'+name]['states']['appearances'].values(): appearance['auto_state']='non_tintable_leaves'
     definition=data['items']['genlite:'+name];definition.pop('texture',None);definition['model']='genlite:item/'+name

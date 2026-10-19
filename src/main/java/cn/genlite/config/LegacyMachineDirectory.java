@@ -11,7 +11,7 @@ final class LegacyMachineDirectory {
         var seen=new HashSet<String>();
         try(var paths=Files.walk(source)) {
             for(Path path:paths.filter(p -> p.toString().endsWith(".yml")).toList()) {
-                String file=path.getFileName().toString();
+                String file=ChineseMachineFiles.name(path.getFileName().toString());
                 if(file.equals("basic_smelter.yml")) continue;
                 if(!expected.contains(file) || !seen.add(file)) throw new IllegalArgumentException("machines/: unknown or duplicate file="+path);
                 Files.copy(path,stage.resolve(file));

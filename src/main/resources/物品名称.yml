@@ -1,0 +1,27 @@
+# 配置和发放命令使用左侧中文名称；右侧为 Minecraft/CraftEngine 注册 ID。
+# 注册 ID 关联已有物品和存档，修改右侧会改变物品身份。可增加其他物品的中文名称。
+schema-version: 1
+items:
+  原石生成器: genlite:cobblestone_generator
+  木材生成器: genlite:timber_generator
+  铁生成器: genlite:iron_generator
+  普通收集器: genlite:resource_collector
+  燃料: genlite:fuel
+  绑定工具: genlite:binding_tool
+  初级升级单元: genlite:basic_upgrade_unit
+  铁片: genlite:mechanical_parts
+  铁环: genlite:gear
+  铜丝: genlite:copper_coil
+  铁架: genlite:machine_frame
+  能量石: genlite:energy_cell
+  木箱: genlite:storage_module
+  魔力碎片: genlite:mana_shard
+  远古核心: genlite:ancient_core
+  晶片: genlite:industrial_chip
+  合金: genlite:refined_alloy
+  原石: minecraft:cobblestone
+  橡木原木: minecraft:oak_log
+  铁锭: minecraft:iron_ingot
+  粗铁: minecraft:raw_iron
+  箱子: minecraft:chest
+  木棍: minecraft:stick

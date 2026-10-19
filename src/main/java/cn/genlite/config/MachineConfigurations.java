@@ -9,10 +9,10 @@ import java.util.function.Function;
 /** IO-executor only. Publish all bundled/migrated files together; never overwrite existing configuration. */
 public record MachineConfigurations(Rules rules, Map<String,MachineDisplay> displays) {
     public static final Map<String,String> FILES=Map.of(
-            "cobblestone_generator","cobblestone_generator.yml",
-            "timber_generator","timber_generator.yml",
-            "iron_generator","iron_generator.yml",
-            "resource_collector","resource_collector.yml");
+            "cobblestone_generator","原石生成器.yml",
+            "timber_generator","木材生成器.yml",
+            "iron_generator","铁生成器.yml",
+            "resource_collector","普通收集器.yml");
     public MachineConfigurations { displays=Map.copyOf(displays); }
     public static MachineConfigurations load(Path root,Function<String,InputStream> resources) throws Exception {
         Path directory=root.resolve("genlite");
@@ -46,6 +46,8 @@ public record MachineConfigurations(Rules rules, Map<String,MachineDisplay> disp
         }
     }
     public static MachineConfigurations read(Path directory) throws Exception {
+        ChineseMachineFiles.migrate(directory);
+        ItemNames names=ItemNames.load(directory.getParent().resolve("物品名称.yml"));
         Path retired=directory.resolve("basic_smelter.yml");
         if(Files.exists(retired)) Files.move(retired,retired.resolveSibling("basic_smelter.yml.retired.bak"));
         Set<String> found=new HashSet<>();
@@ -56,14 +58,15 @@ public record MachineConfigurations(Rules rules, Map<String,MachineDisplay> disp
         var types=new HashMap<String,Rules.Type>();var displays=new HashMap<String,MachineDisplay>();
         for(var e:FILES.entrySet()) {
             ConfigDocument doc=ConfigDocument.load(directory.resolve(e.getValue()),"genlite/"+e.getValue());
-            if(!doc.string("id").equals(e.getKey())) throw doc.invalid("id");
+            if(!names.machine(doc.string("id")).equals(e.getKey())) throw doc.invalid("id");
             CollectorCapacityMigration.apply(directory.resolve(e.getValue()),doc,e.getKey());
             BasicMaterialsMigration.apply(directory.resolve(e.getValue()),doc,e.getKey());
             UpgradeUnitMigration.apply(directory.resolve(e.getValue()),doc,e.getKey());
             HologramLayoutMigration.apply(directory.resolve(e.getValue()),doc);
             ItemLoreMigration.apply(directory.resolve(e.getValue()),doc,e.getKey());
             PresentationMigration.machine(directory.resolve(e.getValue()),doc,e.getKey());
-            types.put(e.getKey(),MachineDefinition.rules(doc,e.getKey()));displays.put(e.getKey(),MachineDefinition.display(doc));
+            ChineseItemMigration.machine(directory.resolve(e.getValue()),doc,e.getKey(),names);
+            types.put(e.getKey(),MachineDefinition.rules(doc,e.getKey(),names));displays.put(e.getKey(),MachineDefinition.display(doc));
         }
         return new MachineConfigurations(new Rules(types),displays);
     }

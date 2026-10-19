@@ -21,7 +21,7 @@ class VerifyPresentation {
         for(String file:Files.readAllLines(Path.of(args[0]))) {
             if(!file.endsWith(".yml")) continue;
             var yaml=new YamlConfiguration();yaml.load(Path.of(file).toFile());
-            String type=loaded.rules().types().keySet().stream().filter(file::contains).findFirst()
+            String type=loaded.rules().types().keySet().stream().filter(t -> file.contains(t) || file.endsWith(MachineConfigurations.FILES.get(t))).findFirst()
                     .orElse(file.contains("collector")?"resource_collector":"timber_generator");
             var m=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),type,3);
             var values=text.variables(m,Map.of(m.id(),m),Set.of(m.id()));

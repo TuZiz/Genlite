@@ -9,7 +9,7 @@ public final class PrepareUpgradeUnits {
     public static void main(String[] args) throws Exception {
         Path root=Path.of(args[0]);
         for(String id:List.of("cobblestone_generator","timber_generator","iron_generator")) {
-            Path file=root.resolve("genlite/"+id+".yml");var doc=ConfigDocument.load(file,"genlite/"+id+".yml");
+            Path file=root.resolve("genlite/"+MachineConfigurations.FILES.get(id));var doc=ConfigDocument.load(file,"genlite/"+MachineConfigurations.FILES.get(id));
             UpgradeUnitMigration.apply(file,doc,id);
             System.out.println(id+": "+doc.yaml().getConfigurationSection("upgrades").getValues(true));
         }

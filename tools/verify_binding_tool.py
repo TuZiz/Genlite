@@ -26,7 +26,7 @@ materials=yaml.safe_load((pack/'configuration/materials.yml').read_text(encoding
 assert materials['items']['genlite:binding_tool']['material']=='iron_pickaxe'
 carriers={'cobblestone_generator':'cobblestone','timber_generator':'oak_log','iron_generator':'iron_block','resource_collector':'chest','basic_smelter':'furnace'}
 for name,carrier in carriers.items():
-    data=yaml.safe_load((pack/f'configuration/machines/{name}.yml').read_text(encoding='utf-8'))
+    data=yaml.safe_load((pack/f"configuration/machines/{ {'cobblestone_generator':'原石生成器','timber_generator':'木材生成器','iron_generator':'铁生成器','resource_collector':'普通收集器'}.get(name,name)}.yml").read_text(encoding='utf-8'))
     assert data['items']['genlite:'+name]['material']==carrier
     assert data['items']['genlite:'+name]['behavior']['type']=='block_item'
     assert 'minecraft:mineable/pickaxe' in data['blocks']['genlite:'+name]['settings']['tags']

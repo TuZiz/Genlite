@@ -1,73 +1,73 @@
 recipes:
-  genlite:cobblestone_generator:
+  genlite:cobblestone_generator:  # 原石生成器
     type: shaped
     pattern:
     - CCC
     - CLC
     - CCC
     ingredients:
-      C: minecraft:cobblestone
-      L: minecraft:oak_log
+      C: minecraft:cobblestone  # 原石
+      L: minecraft:oak_log  # 橡木原木
     result:
-      id: genlite:cobblestone_generator
+      id: genlite:cobblestone_generator  # 原石生成器
       count: 1
-  genlite:timber_generator:
+  genlite:timber_generator:  # 木材生成器
     type: shaped
     pattern:
     - LLL
     - LCL
     - LLL
     ingredients:
-      L: minecraft:oak_log
-      C: minecraft:cobblestone
+      L: minecraft:oak_log  # 橡木原木
+      C: minecraft:cobblestone  # 原石
     result:
-      id: genlite:timber_generator
+      id: genlite:timber_generator  # 木材生成器
       count: 1
-  genlite:iron_generator:
+  genlite:iron_generator:  # 铁生成器
     type: shaped
     pattern:
     - CIC
     - III
     - CIC
     ingredients:
-      C: minecraft:cobblestone
-      I: minecraft:iron_ingot
+      C: minecraft:cobblestone  # 原石
+      I: minecraft:iron_ingot  # 铁锭
     result:
-      id: genlite:iron_generator
+      id: genlite:iron_generator  # 铁生成器
       count: 1
-  genlite:resource_collector:
+  genlite:resource_collector:  # 普通收集器
     type: shaped
     pattern:
     - LIL
     - ICI
     - LIL
     ingredients:
-      L: minecraft:oak_log
-      I: minecraft:iron_ingot
-      C: minecraft:chest
+      L: minecraft:oak_log  # 橡木原木
+      I: minecraft:iron_ingot  # 铁锭
+      C: minecraft:chest  # 箱子
     result:
-      id: genlite:resource_collector
+      id: genlite:resource_collector  # 普通收集器
       count: 1
-  genlite:binding_tool:
+  genlite:binding_tool:  # 绑定工具
     type: shaped
     pattern:
     - ' I '
     - ' SI'
     - 'S  '
     ingredients:
-      I: minecraft:iron_ingot
-      S: minecraft:stick
+      I: minecraft:iron_ingot  # 铁锭
+      S: minecraft:stick  # 木棍
     result:
-      id: genlite:binding_tool
+      id: genlite:binding_tool  # 绑定工具
       count: 1
-  genlite:fuel:
+  genlite:fuel:  # 燃料
     type: shaped
     pattern:
     - LLL
     - L L
     - LLL
     ingredients:
-      L: minecraft:oak_log
+      L: minecraft:oak_log  # 橡木原木
     result:
-      id: genlite:fuel
+      id: genlite:fuel  # 燃料
       count: 4

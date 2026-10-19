@@ -11,10 +11,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 /** Use only on the player/region thread; never match translated names. */
 public final class CraftItems {
     private final cn.genlite.display.MachineText text;
+    private final cn.genlite.config.ItemNames names;
     private final java.util.function.Supplier<cn.genlite.domain.WorldState> state;
     private final NamespacedKey levelKey;
     private final NamespacedKey sourceKey, tokenKey;
-    public CraftItems(JavaPlugin plugin,cn.genlite.display.MachineText text,java.util.function.Supplier<cn.genlite.domain.WorldState> state) {
+    public CraftItems(JavaPlugin plugin,cn.genlite.display.MachineText text,java.util.function.Supplier<cn.genlite.domain.WorldState> state,cn.genlite.config.ItemNames names) {
+        this.names=names;
         this.text=text;
         this.state=state;
         levelKey=new NamespacedKey(plugin,"machine-level");
@@ -48,7 +50,10 @@ public final class CraftItems {
         int level=stack.getPersistentDataContainer().getOrDefault(levelKey,PersistentDataType.INTEGER,1);
         return Math.clamp(level,1,5);
     }
+    public String resolve(String value) {return names.resolve(value);}
+    public String name(String id) {return names.name(id);}
     public ItemStack build(Player player,String id,int amount,int level) {
+        id=names.resolve(id);
         ItemStack item;
         if (id.startsWith("genlite:")) {
             var definition=CraftEngineItems.byId(id);

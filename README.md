@@ -22,10 +22,10 @@ plugins/Genlite/
   config.yml
   warehouse.yml
   genlite/
-    cobblestone_generator.yml
-    timber_generator.yml
-    iron_generator.yml
-    resource_collector.yml
+    原石生成器.yml
+    木材生成器.yml
+    铁生成器.yml
+    普通收集器.yml
   gui/
     generator.yml
     collector.yml
@@ -44,7 +44,7 @@ plugins/Genlite/
 1. 将 target/Genlite-1.0.0.jar 放入 plugins；已有机器数据保留。
 2. 将 craftengine/genlite 放入 plugins/CraftEngine/resources/genlite；更新已有同名源文件。
 3. 正常重启服务器加载新插件后，在控制台执行 ce workflow default（游戏内 /ce workflow default），重新生成并发送 CraftEngine 合并资源包。只替换材质源文件不会更新客户端已有的资源包缓存。
-4. 管理员使用 /genlite give cobblestone_generator、/genlite give resource_collector、/genlite give binding_tool、/genlite give fuel 64。正常机器每次发放一个，材料也有工作台配方。
+4. 管理员使用 /genlite give 原石生成器、/genlite give 普通收集器、/genlite give 绑定工具、/genlite give 燃料 64。正常机器每次发放一个，材料也有工作台配方。
 
 完整安装包：dist/Genlite-1.0.0.zip。模型离线结构预览：art/generator-models-preview.png；使用实际交付 JSON 几何、原版材质取色示意，非客户端截图。燃料原图和提示词保存在 art/fuel/。
 
@@ -122,7 +122,7 @@ Java25 / Maven package 与 75 项 JUnit 测试通过；新增 4 项覆盖立即�
 
 新增 CE 物品 genlite:basic_upgrade_unit，名称为「初级升级单元」，纸底材、独立 32×32 RGBA 像素图标，已加入 CE 分类，保留绑定工具属性隐藏与现有模型。按用户指定接口通过 imagegen CLI 的 gpt-image-2 生成铜铁边框与青绿色箭头图标，品红键色转透明并导出至资源包；生成凭据仅在调用进程环境内，不写入文件。
 
-三种生成器升级改为仅消耗该物品：原石/木材 1→2/2→3/3→4/4→5 分别为 2/6/16/40 个，铁为 3/9/24/60 个。收集器升级配置本次不改；没有添加合成配方或未经要求的任务/掉落来源。可通过 CE 分类或管理员 /genlite give basic_upgrade_unit 64 发放。升级按钮用新图标并显示所需及背包拥有数量；仍沿用原支付事务、级别重校验和失败退款，不按物品名称匹配。
+三种生成器升级改为仅消耗该物品：原石/木材 1→2/2→3/3→4/4→5 分别为 2/6/16/40 个，铁为 3/9/24/60 个。收集器升级配置本次不改；没有添加合成配方或未经要求的任务/掉落来源。可通过 CE 分类或管理员 /genlite give 初级升级单元 64 发放。升级按钮用新图标并显示所需及背包拥有数量；仍沿用原支付事务、级别重校验和失败退款，不按物品名称匹配。
 
 添加 upgrade-item-version: 1 迁移标记：仅替换已知默认升级表，保留自定义表、中文注释与未知字段，写前备份并原子替换，重复执行不改写。历史工业材料到原版材料迁移保持固定 v2 目标，再由新迁移转换为升级单元；最老 machines.yml 路径也覆盖。GUI/语言只补齐新标签和升级需求模板，默认经验瓶按钮换新图标，保留自定义图标、标题与 Shape。实际服务端配置已通过离线 Java 工具准备，不启用插件、不读取机器/玩家存档。
 
@@ -163,3 +163,15 @@ Java 25 编译与定向 Maven package 通过，生产、路由、持久化和粒
 - 修复：将同一 MachineText 通过 ContainerMenus 注入仓储渲染器，为收集器提供配置中的真实名称；保留中央仓库计数和现有标题配置。
 - 验证：JDK25 `mvn -Dtest=ContainerMenuRendererTest package` 成功，2 项回归测试通过，覆盖实际容器参数、普通收集器[初级] · 1/27、自定义名称/等级、中央仓库标题与递归非斜体；最终标题 Component 已导出用于 Neuron 校验。
 - 更新 JAR 已备份后写入 plugins/update/Genlite-1.0.0.jar；清单 target/verification/collector-title-deployment.json；未启动/停止/重载服务器，未改配置或机器存档。重新加载插件后的游戏内显示待验证。
+
+
+### 中文配置名称（2026-10-19）
+- `genlite/原石生成器.yml`、`木材生成器.yml`、`铁生成器.yml`、`普通收集器.yml` 使用中文文件名，CraftEngine 中四台机器的配置文件名也同步改中文。
+- Genlite 配置中的 `id`、`fuel.item`、`production.output/input`、升级材料键、GUI `item` 支持中文名称，默认配置使用中文；例如 `铁片: 2`、`铜丝: 2`、`初级升级单元: 3`。字段名保持现有格式。
+- 根目录 `物品名称.yml` 集中维护中文名称到真实注册 ID 的映射；新增材料可在此增加名称。旧英文 ID 仍可使用。未知中文名称或同一物品重复配置多个材料键会明确报错，避免重复扣除。
+- 发放命令使用 `/genlite give 原石生成器`、`/genlite give 绑定工具`、`/genlite give 初级升级单元 16`；物品名称补全显示中文。原英文命令参数仍兼容。
+- 首次启动自动迁移旧英文机器文件名，保留 `.chinese-name-v0.bak`；字段以 `item-names-version: 1` 标记幂等迁移，保留未知字段及中文注释，写入前备份。中英文同名机器文件同时存在时停止并指出冲突，不选择任意一个覆盖。旧 machines/ 分类目录也可迁移。
+- CraftEngine YAML 的注册键、配方的 `item/id`、贴图与模型资源路径仍是底层英文 ID，旁边补了中文说明。它们属于 Minecraft/CraftEngine 身份与资源协议，直接替换为中文会改变已有物品身份或产生非法资源路径；平时修改材料和数量使用 Genlite 中文配置，注册映射集中在 `物品名称.yml`。
+- 原有存档中的机器类型、物品 ID、封装凭证保持不变，不执行存档替换。
+
+本轮验证：Java25 `mvn package`，108 项测试全部通过；`python tools/verify.py` 通过（配置、18 个物品、6 个配方、资源路径和 JAR 内容）。相关配置已在副本上迁移两次后离线同步，备份 `backups/chinese-names-20261019-161048`；新 JAR 放入 `plugins/update/Genlite-1.0.0.jar`。未重启或重载服务器，未修改机器/玩家存档；中文命令、客户端与旧机器实服交互尚待重启后验证。

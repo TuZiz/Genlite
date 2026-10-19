@@ -3,10 +3,11 @@
 #   修改后正常重启；文本使用 MiniMessage
 # ==========================================
 schema-version: 1
+item-names-version: 1
 presentation-version: 1
 materials-version: 2
 storage-version: 2
-id: resource_collector
+id: 普通收集器
 base-value: 18
 
 # 物品名称与 Lore 独立配置；燃料为内部能量单位，拆下后显示实际保留数量。
@@ -65,17 +66,17 @@ levels:
 # 目标等级及其所需材料，可按每种机器单独修改。
 upgrades:
   '2':
-    minecraft:cobblestone: 64
-    minecraft:oak_log: 16
+    原石: 64
+    橡木原木: 16
   '3':
-    minecraft:iron_ingot: 32
-    minecraft:oak_log: 32
-    minecraft:cobblestone: 128
+    铁锭: 32
+    橡木原木: 32
+    原石: 128
   '4':
-    minecraft:iron_ingot: 96
-    minecraft:chest: 4
-    minecraft:cobblestone: 256
+    铁锭: 96
+    箱子: 4
+    原石: 256
   '5':
-    minecraft:iron_ingot: 192
-    minecraft:chest: 8
-    minecraft:cobblestone: 512
+    铁锭: 192
+    箱子: 8
+    原石: 512

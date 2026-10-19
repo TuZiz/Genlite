@@ -7,9 +7,15 @@ import java.util.*;
 final class MachineDefinition {
     private MachineDefinition() {}
     static Rules.Type rules(ConfigDocument d,String id) {
+        try {return rules(d,id,ItemNames.bundled());}
+        catch(java.io.IOException error) {throw new IllegalStateException("物品名称.yml load failed",error);}
+        catch(RuntimeException error) {throw error;}
+        catch(Exception error) {throw new IllegalStateException("物品名称.yml load failed",error);}
+    }
+    static Rules.Type rules(ConfigDocument d,String id,ItemNames names) {
         var y=d.yaml();boolean collector=id.equals("resource_collector");
-        String output=collector?null:d.string("production.output");
-        String input=y.contains("production.input")?d.string("production.input"):null;
+        String output=collector?null:item(d,"production.output",names);
+        String input=y.contains("production.input")?item(d,"production.input",names):null;
         if(!collector && !Set.of("minecraft:cobblestone","minecraft:oak_log","minecraft:raw_iron","minecraft:iron_ingot").contains(output)) throw d.invalid("production.output");
         if(input!=null && !input.equals("minecraft:raw_iron")) throw d.invalid("production.input");
         var levels=new HashMap<Integer,Rules.Level>();
@@ -30,8 +36,9 @@ final class MachineDefinition {
             if(section==null) throw d.invalid(p);
             var costs=new LinkedHashMap<String,Integer>();
             for(String item:section.getKeys(false)) {
-                if(!item.matches("(minecraft|genlite):[a-z0-9_]+")) throw d.invalid(p+"."+item);
-                costs.put(item,d.integer(p+"."+item,1,1000000));
+                String resolved;
+                try {resolved=names.resolve(item);} catch(IllegalArgumentException error) {throw d.invalid(p+"."+item);}
+                if(costs.putIfAbsent(resolved,d.integer(p+"."+item,1,1000000))!=null) throw d.invalid(p+"."+item);
             }
             upgrades.put(n,Map.copyOf(costs));
         }
@@ -41,12 +48,15 @@ final class MachineDefinition {
             if(max-min!=7) throw d.invalid("collection.max-offset");
             range=new Rules.Range(min,max,d.integer("collection.max-height-difference",0,64));
         } else {
-            String item=d.string("fuel.item");
+            String item=item(d,"fuel.item",names);
             if(!item.matches("(minecraft|genlite):[a-z0-9_]+")) throw d.invalid("fuel.item");
             fuel=new Rules.Fuel(item,d.integer("fuel.units-per-item",1,1000000));
         }
         return new Rules.Type(input,output,collector?0:d.integer("production.fuel-per-item",1,1000000),
                 d.integer("base-value",0,1000000),levels,upgrades,fuel,range);
+    }
+    private static String item(ConfigDocument doc,String field,ItemNames names) {
+        try {return names.resolve(doc.string(field));} catch(IllegalArgumentException error) {throw doc.invalid(field);}
     }
     static MachineDisplay display(ConfigDocument d) {
         return new MachineDisplay(d.string("display.name"),d.lines("display.lore"),new MachineDisplay.Hologram(
