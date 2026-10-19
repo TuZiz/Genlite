@@ -1,0 +1,39 @@
+# ==========================================
+#          中央仓库 (资源存储容器)
+#  点击物品取出；Shift 点击背包原版资源可存入
+# ==========================================
+schema-version: 2
+
+# 菜单标题：延续金色主题，槽位占用使用青绿与浅灰区分
+title: '<#FFB75E>✦ <#FFD700><bold>中央仓库</bold> <#5C6B73>· <#A8FF78><used_slots><#7F8C8D>/<#89F7FE><slots>'
+
+shape:
+  - 'OOOOOOOOO'
+  - 'OOOOOOOOO'
+  - 'OOOOOOOOO'
+  - 'OOOOOOOOO'
+  - 'OOOOOOOOO'
+  - '    X    '
+
+elements:
+  O:
+    material: AIR
+    name: '<#89F7FE>✦ <#E0F7FA><bold>存储物品</bold>'
+    lore:
+      - ''
+      - ' <#FFB75E>▪ <#FFE0B2>当前存量：<#FFD700><count>'
+      - ''
+      - ' <#FFDF00>▶ <#FFF9C4>[左键] <#E0F7FA>取出 1 个 <#7F8C8D>| <#FFF9C4>[右键] <#E0F7FA>取出 10 个'
+      - ' <#FFDF00>▶ <#FFF9C4>[Shift+左键] <#E0F7FA>取出 1 组'
+      - ' <#FFDF00>▶ <#FFF9C4>[Shift+右键] <#A8FF78>取出全部'
+      - ''
+      - ' <#7F8C8D>❖ 背包空间不足时仅取出可容纳的数量'
+    action: stock
+
+  X:
+    material: BARRIER
+    name: '<#FF6B6B>✖ <#FF8E8E><bold>关闭仓库</bold>'
+    lore:
+      - ''
+      - ' <#FF6B6B>▶ <#FFD1D1>[点击] 关闭当前界面'
+    action: close

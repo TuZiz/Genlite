@@ -1,0 +1,37 @@
+# 服务器主菜单；空岛功能继续使用 DreamSkyblock 原菜单。
+# schema-version 仅作维护标记，不是 Invero 自动迁移机制。
+'schema-version': 1
+'title': '<#67E8F9>服务器菜单'
+'rows': 3
+'bindings':
+  'command':
+    - 'servermenu'
+    - '菜单'
+    - 'cd'
+'layout':
+  - '#########'
+  - '# H   I #'
+  - '#########'
+'items':
+  '#':
+    'material': 'GRAY_STAINED_GLASS_PANE'
+    'name': '<italic:false> '
+  'H':
+    'material': 'COMPASS'
+    'name': '<italic:false><#FBBF24>回到主城'
+    'lore':
+      - '<italic:false><#CBD5E1>传送到主世界的出生点'
+    'action':
+      'left': |-
+        js """var actor = player; actor.closeInventory(); var Bukkit = Java.type('org.bukkit.Bukkit'); var world = Bukkit.getWorld('world'); if (world !== null) { actor.teleportAsync(world.getSpawnLocation()); } else { var MiniMessage = Java.type('net.kyori.adventure.text.minimessage.MiniMessage'); actor.sendMessage(MiniMessage.miniMessage().deserialize('<#F87171>主城世界暂未加载，请稍后再试。')); } true;"""
+        true
+  'I':
+    'material': 'GRASS_BLOCK'
+    'name': '<italic:false><#34D399>回到空岛'
+    'lore':
+      - '<italic:false><#CBD5E1>打开空岛菜单，回岛或管理家园'
+    'action':
+      'left': |-
+        menu close
+        playerPerform "dreamskyblock:home gui"
+        true

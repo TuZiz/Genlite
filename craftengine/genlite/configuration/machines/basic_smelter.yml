@@ -1,0 +1,125 @@
+items:
+  genlite:basic_smelter:
+    material: furnace
+    data:
+      item_name: '<italic:false><#D7AF65>基础熔炼机'
+    model: genlite:item/basic_smelter
+    behavior:
+      type: block_item
+      block: genlite:basic_smelter
+blocks:
+  genlite:basic_smelter:
+    settings:
+      hardness: 3.0
+      resistance: 6.0
+      replaceable: false
+      push_reaction: block
+      can_occlude: false
+      is_suffocating: false
+      is_view_blocking: false
+      tags:
+      - minecraft:mineable/pickaxe
+    loot:
+      pools:
+      - rolls: 1
+        conditions:
+        - type: survives_explosion
+        entries:
+        - type: item
+          item: genlite:basic_smelter
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+        mode:
+          type: int
+          min: 0
+          max: 2
+          default: 0
+      appearances:
+        facing=north,mode=0:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_paused
+            y: 0
+        facing=east,mode=0:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_paused
+            y: 90
+        facing=south,mode=0:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_paused
+            y: 180
+        facing=west,mode=0:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_paused
+            y: 270
+        facing=north,mode=1:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_running
+            y: 0
+        facing=east,mode=1:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_running
+            y: 90
+        facing=south,mode=1:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_running
+            y: 180
+        facing=west,mode=1:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_running
+            y: 270
+        facing=north,mode=2:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_no_fuel
+            y: 0
+        facing=east,mode=2:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_no_fuel
+            y: 90
+        facing=south,mode=2:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_no_fuel
+            y: 180
+        facing=west,mode=2:
+          auto_state: solid
+          model:
+            path: genlite:block/basic_smelter_no_fuel
+            y: 270
+      variants:
+        facing=north,mode=0:
+          appearance: facing=north,mode=0
+        facing=east,mode=0:
+          appearance: facing=east,mode=0
+        facing=south,mode=0:
+          appearance: facing=south,mode=0
+        facing=west,mode=0:
+          appearance: facing=west,mode=0
+        facing=north,mode=1:
+          appearance: facing=north,mode=1
+        facing=east,mode=1:
+          appearance: facing=east,mode=1
+        facing=south,mode=1:
+          appearance: facing=south,mode=1
+        facing=west,mode=1:
+          appearance: facing=west,mode=1
+        facing=north,mode=2:
+          appearance: facing=north,mode=2
+        facing=east,mode=2:
+          appearance: facing=east,mode=2
+        facing=south,mode=2:
+          appearance: facing=south,mode=2
+        facing=west,mode=2:
+          appearance: facing=west,mode=2

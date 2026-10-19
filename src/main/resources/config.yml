@@ -1,0 +1,3 @@
+# 全局配置；机器数据独立平铺于 genlite/，菜单位于 gui/。
+schema-version: 1
+storage-file: machines.json

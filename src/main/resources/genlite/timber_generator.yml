@@ -1,0 +1,94 @@
+# ==========================================
+#          木材生成器独立配置
+#   修改后正常重启；文本使用 MiniMessage
+# ==========================================
+schema-version: 1
+presentation-version: 1
+materials-version: 2
+upgrade-item-version: 1
+id: timber_generator
+base-value: 9
+
+# 物品名称与 Lore 独立配置；燃料为内部能量单位，拆下后显示实际保留数量。
+# Lore 支持 <level> <fuel> <fuel_capacity> <seconds> <count> <fuel_per_item> <mode> <stored_items> <used_slots> <slots>
+display:
+  lore-version: 3
+  name: '<#FFB75E>✦ <#FFD700><bold>木材生成器</bold> <#89F7FE>[Lv.<level>]'
+  lore:
+    - ' <#7F8C8D>❖ 生态林木采集'
+    - ''
+    - ' <#89F7FE>▪ <#C2E9FB>内部燃料：<#FFF6B7><fuel> <#7F8C8D>/ <#FFB75E><fuel_capacity> 能量'
+    - ' <#89F7FE>▪ <#C2E9FB>生产效率：<#A8FF78>每 <seconds> 秒 <count> 个 <#7F8C8D>(耗能 <fuel_per_item>/个)'
+    - ' <#89F7FE>▪ <#C2E9FB>默认输出：<#FFFFFF><mode>'
+    - ''
+    - ' <#90A4AE>无需树苗投入，消耗燃料自动培育并砍伐 <#FFB75E>橡木原木<#90A4AE>，'
+    - ' <#90A4AE>随等级提升可大幅缩短生产耗时并扩容。'
+    - ''
+    - ' <#FFDF00>▶ <#FFF9C4>[右键机器] <#E0F7FA>打开控制面板'
+    - ' <#FFDF00>▶ <#FFF9C4>[绑定工具] <#E0F7FA>右键连接至收集器'
+    - ' <#A8FF78>▶ <#78FFD6>[潜行+右键 / 镐挖掘] <#E0F7FA>安全拆除并保留数据'
+
+# 全息字每秒更新一次；height 为相对方块底面的高度，范围 1..4 格。
+# 支持 <machine> <level> <status> <fuel> <fuel_capacity> <input> <seconds> <count> <value> <used_slots> <slots> <mode> <binding> <locked> <paused>
+hologram:
+  layout-version: 2
+  enabled: true
+  height: 1.05
+  scale: 0.65
+  lines:
+    - '<machine>'
+    - '<status> <#5C6B73>| <#E0F7FA><mode>'
+    - '<#FFB75E>🔥 <#FFE0B2>燃料：<#FFF6B7><fuel><#7F8C8D>/<#FFB75E><fuel_capacity>'
+
+# 每个燃料物品兑换的燃料单位；只在实际生产时消耗。
+fuel:
+  item: genlite:fuel
+  units-per-item: 8
+
+production:
+  output: minecraft:oak_log
+  fuel-per-item: 1
+
+# 生产间隔单位秒，至少 5 秒；单次最多 2 个；最高产能不超过一级 4 倍。
+levels:
+  '1':
+    interval-seconds: 10
+    output-count: 1
+    fuel-capacity-items: 64
+    buffer-capacity-items: 64
+    value-multiplier: 1.0
+  '2':
+    interval-seconds: 8
+    output-count: 1
+    fuel-capacity-items: 128
+    buffer-capacity-items: 128
+    value-multiplier: 1.5
+  '3':
+    interval-seconds: 8
+    output-count: 2
+    fuel-capacity-items: 192
+    buffer-capacity-items: 192
+    value-multiplier: 2.0
+  '4':
+    interval-seconds: 6
+    output-count: 2
+    fuel-capacity-items: 256
+    buffer-capacity-items: 256
+    value-multiplier: 2.8
+  '5':
+    interval-seconds: 5
+    output-count: 2
+    fuel-capacity-items: 320
+    buffer-capacity-items: 320
+    value-multiplier: 4.0
+
+# 每次升一级只消耗初级升级单元；数量可按生成器单独调整。
+upgrades:
+  '2':
+    genlite:basic_upgrade_unit: 2
+  '3':
+    genlite:basic_upgrade_unit: 6
+  '4':
+    genlite:basic_upgrade_unit: 16
+  '5':
+    genlite:basic_upgrade_unit: 40

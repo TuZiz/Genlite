@@ -1,0 +1,92 @@
+# ==========================================
+#       生成器控制面板 (对称布局)
+#   顶部状态、两侧功能，底行中心关闭
+# ==========================================
+schema-version: 4
+presentation-version: 1
+upgrade-item-version: 1
+
+# 菜单标题：使用柔和金黄搭配青蓝等级标识
+title: '<machine>'
+
+shape:
+  - '####S####'
+  - '##F###O##'
+  - '###U#P###'
+  - '####X####'
+
+elements:
+  '#':
+    material: GRAY_STAINED_GLASS_PANE
+    name: ''
+    action: none
+
+  S:
+    material: CLOCK
+    name: '<#89F7FE>✦ <#E0F7FA><bold>机器状态</bold>'
+    lore:
+      - ''
+      - ' <#89F7FE>▪ <#C2E9FB>当前状态：<#FFFFFF><status>'
+      - ' <#89F7FE>▪ <#C2E9FB>工作间隔：<#A8FF78><seconds> 秒'
+      - ' <#89F7FE>▪ <#C2E9FB>单次产出：<#A8FF78><count>'
+      - ' <#89F7FE>▪ <#C2E9FB>设施价值：<#FFD700><value>'
+      - ''
+      - ' <#FFDF00>▶ <#FFF9C4>[点击] 刷新面板数据'
+    action: refresh
+
+  F:
+    material: COAL
+    name: '<#FFB75E>✦ <#FFD700><bold>燃料储备</bold>'
+    lore:
+      - ''
+      - ' <#FFB75E>▪ <#FFE0B2>使用燃料：<fuel_item> <#7F8C8D>(每个 <#FFF6B7><fuel_units> <#7F8C8D>能量)'
+      - ' <#FFB75E>▪ <#FFE0B2>剩余燃料：<#FFF6B7><fuel> <#7F8C8D>/ <#FFB75E><fuel_capacity> 单位'
+      - ''
+      - ' <#89F7FE>▪ <#C2E9FB>产出物品：<output_item>'
+      - ' <#89F7FE>▪ <#C2E9FB>产出效率：<#A8FF78>每 <seconds> 秒 <count> 个'
+      - ' <#89F7FE>▪ <#C2E9FB>产出耗能：<#FFF6B7><fuel_per_item> 能量 / 个'
+      - ''
+      - ' <#FFDF00>▶ <#FFF9C4>[左键] <#E0F7FA>从背包存入最多 64 个燃料'
+      - ' <#FFDF00>▶ <#FFF9C4>[右键] <#E0F7FA>取出完整燃料物品'
+    action: fuel
+
+  O:
+    material: CHEST
+    name: '<#A1C4FD>✦ <#C2E9FB><bold>输出模式</bold>'
+    lore:
+      - ''
+      - ' <#A1C4FD>▪ <#E0F7FA>当前模式：<#FFFFFF><mode>'
+      - ' <#A1C4FD>▪ <#E0F7FA>绑定收集器：<#A8FF78><binding>'
+      - ''
+      - ' <#FFDF00>▶ <#FFF9C4>[左键] <#E0F7FA>切换输出模式'
+      - ' <#FFDF00>▶ <#FFF9C4>[右键] <#E0F7FA>打开中央仓库'
+    action: mode
+
+  U:
+    item: genlite:basic_upgrade_unit
+    name: '<#A8FF78>✦ <#78FFD6><bold>升级生成器</bold>'
+    lore:
+      - ''
+      - ' <#A8FF78>▪ <#E0F7FA>当前等级：<#FFD700>Lv.<level> <#7F8C8D>(最高 Lv.5)'
+      - ' <#A8FF78>▪ <#90A4AE>满级后将无法继续升级'
+      - ''
+      - ' <#FFDF00>▶ <#FFF9C4>升级所需材料请查看下方提示：'
+    action: upgrade
+
+  P:
+    material: LEVER
+    name: '<#F2CC60>✦ <#FFE082><bold>运行控制</bold>'
+    lore:
+      - ''
+      - ' <#F2CC60>▪ <#FFF9C4>手动暂停：<#FFFFFF><paused>'
+      - ''
+      - ' <#FFDF00>▶ <#FFF9C4>[点击] <#E0F7FA>切换 暂停 / 继续 状态'
+    action: pause
+
+  X:
+    material: BARRIER
+    name: '<#FF6B6B>✖ <#FF8E8E><bold>关闭菜单</bold>'
+    lore:
+      - ''
+      - ' <#FF6B6B>▶ <#FFD1D1>[点击] 关闭当前界面'
+    action: close

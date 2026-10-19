@@ -1,0 +1,76 @@
+# ==========================================
+#          GenLite 全局语言与标签配置
+#   统一全服视觉色彩，移除斜体冗余标签
+# ==========================================
+schema-version: 4
+presentation-version: 1
+upgrade-item-version: 1
+
+# ── 错误与限制提示 (柔和珊瑚红 #FF6B6B + 冰晶白正文 #E0F7FA) ──
+permission: '<#FF6B6B>✖ <#E0F7FA>你没有权限操作这台机器。'
+locked: '<#FF6B6B>🔒 <#E0F7FA>机器已锁定，仅 <#FFD700>放置者 <#E0F7FA>本人可操作。'
+unavailable: '<#FF6B6B>✖ <#E0F7FA>系统尚未就绪或数据保存失败，请稍后重试。'
+missing: '<#FF6B6B>✖ <#E0F7FA>目标机器已不存在或已被拆除。'
+full: '<#FF6B6B>✖ <#E0F7FA>机器内部存储空间已满，请及时清理。'
+invalid-shell: '<#FF6B6B>⚠ <#E0F7FA>机器数据校验异常或尚未完成拆除，请联系管理员处理。'
+range: '<#FF6B6B>✖ <#E0F7FA>超出连接范围！仅限同岛屿 <#FFB75E>8×8 <#E0F7FA>内且高度差不超过 <#FFB75E>4 格 <#E0F7FA>的收集器。'
+world: '<#FF6B6B>✖ <#E0F7FA>该机器仅限在 <#FFD700>个人家园 <#E0F7FA>内放置使用。'
+materials: '<#FF6B6B>✖ <#E0F7FA>升级所需材料不足，请悬停升级按钮查看详情。'
+inventory-full: '<#FF6B6B>✖ <#E0F7FA>背包空间不足！未装下的物品已保留在原容器，其余将在腾出空位后自动发放。'
+unsupported-item: '<#FF6B6B>✖ <#E0F7FA>仅支持存入标准原版资源，无法存入带有附魔、耐久或特殊属性的数据物品。'
+
+# ── 警告与冷却提示 (暖金 #FFB75E + 冰晶白正文 #E0F7FA) ──
+busy: '<#FFB75E>⏳ <#E0F7FA>操作正在处理中，请勿频繁点击。'
+empty: '<#89F7FE>ℹ <#C2E9FB>当前容器内没有可以取出的物品。'
+max-level: '<#FFB75E>✦ <#E0F7FA>该机器已达 <#FFD700>最高等级<#E0F7FA>，或暂不支持升级。'
+quarantined: '<#FFB75E>⚠ <#E0F7FA>检测到异常中断的发放记录，已触发防刷保护锁定，请联系管理员核实。'
+
+# ── 成功与引导提示 (薄荷绿 #A8FF78 + 冰蓝高亮 #89F7FE) ──
+done: '<#A8FF78>✔ <#E0F7FA>操作已成功执行。'
+selected: '<#A8FF78>✔ <#E0F7FA>已选定当前机器，请持绑定工具 <#FFF9C4>[右键] <#E0F7FA>目标生成器或收集器。'
+bound: '<#A8FF78>🔗 <#E0F7FA>设备连接成功！请前往生成器面板将输出模式切换为 <#89F7FE>[传输至收集器]<#E0F7FA>。'
+queued: '<#A8FF78>✔ <#E0F7FA>待发物品已进入队列，将在背包腾出空间时自动放入。'
+
+# ── 指令与全息字提示 ──
+usage: '<#FFB75E>✦ <#FFF9C4>/genlite warehouse <#E0F7FA>打开中央仓库 <#7F8C8D>| <#FFF9C4>/genlite give <物品ID> [数量] <#E0F7FA>管理发放'
+holograms:
+  enabled: '<#A8FF78>✔ <#E0F7FA>已开启本家园的机器全息悬浮字。'
+  disabled: '<#90A4AE>✖ <#C2E9FB>已关闭本家园的机器全息悬浮字，机器将继续照常运行。'
+  no-home: '<#FF6B6B>✖ <#E0F7FA>仅限 <#FFD700>家园主人 <#E0F7FA>可切换本家园的机器全息字显示。'
+  failed: '<#FF6B6B>✖ <#E0F7FA>全息字设置保存失败，请稍后重试或联系管理员。'
+hologram-settings-version: 1
+
+# ── 状态与模式标签 (适用于 GUI 菜单与全息字显示) ──
+status:
+  running: '<#A8FF78>● 运转中'
+  paused: '<#90A4AE>⏸ 已暂停'
+  no_fuel: '<#FF6B6B>⚡ 燃料耗尽'
+
+mode:
+  drop: '<#FFB75E>⏏ 原地掉落'
+  warehouse: '<#89F7FE>📥 存入中央仓库'
+  collector: '<#78FFD6>🔗 传输至收集器'
+
+'yes': '<#A8FF78>✔ 是'
+'no': '<#90A4AE>✖ 否'
+none: '<#7F8C8D>未绑定'
+
+# ── 升级材料与物品标签 (与菜单面板前缀、色系保持一致) ──
+cost-line: ' <#89F7FE>▪ <item> <#7F8C8D>×<#FFD700><amount>'
+upgrade-cost-line: ' <#89F7FE>▪ <item> <#C2E9FB>需 <#FFD700><amount> <#C2E9FB>个 <#7F8C8D>(拥有: <#A8FF78><owned><#7F8C8D>)'
+
+item-labels:
+  genlite:fuel: '<#FFB75E>燃料'
+  genlite:basic_upgrade_unit: '<#78FFD6>初级升级单元'
+  minecraft:cobblestone: '<#E0F7FA>原石'
+  minecraft:oak_log: '<#FFB75E>橡木原木'
+  minecraft:iron_ingot: '<#FFFFFF>铁锭'
+  minecraft:chest: '<#FFE082>箱子'
+  genlite:gear: '<#FFB75E>铁环'
+  genlite:copper_coil: '<#FF8E53>铜丝'
+  genlite:mechanical_parts: '<#FFD700>铁片'
+  genlite:storage_module: '<#89F7FE>木箱'
+  genlite:industrial_chip: '<#A1C4FD>晶片'
+  genlite:refined_alloy: '<#D4A5FF>合金'
+  genlite:ancient_core: '<#FF8E8E>远古核心'
+collector-required: '<#FFB75E>请先使用绑定工具绑定有效收集器，再切换传输方式。'

@@ -1,0 +1,84 @@
+# 机器生产、燃料、等级和材料升级；间隔单位秒。最高基础产能为一级的 4 倍。
+schema-version: 1
+collector:
+  # x/z 相对收集器各为 -4..3，构成恰好 8×8，不是半径 8。
+  min-offset: -4
+  max-offset: 3
+  max-height-difference: 4
+  slots: 27
+fuel:
+  item: genlite:fuel
+  units-per-item: 8
+levels:
+  '1':
+    interval-seconds: 10
+    output-count: 1
+    fuel-capacity-items: 64
+    buffer-capacity-items: 64
+    value-multiplier: 1.0
+    collector-slots: 27
+  '2':
+    interval-seconds: 8
+    output-count: 1
+    fuel-capacity-items: 128
+    buffer-capacity-items: 128
+    value-multiplier: 1.5
+    collector-slots: 36
+  '3':
+    interval-seconds: 8
+    output-count: 2
+    fuel-capacity-items: 192
+    buffer-capacity-items: 192
+    value-multiplier: 2.0
+    collector-slots: 45
+  '4':
+    interval-seconds: 6
+    output-count: 2
+    fuel-capacity-items: 256
+    buffer-capacity-items: 256
+    value-multiplier: 2.8
+    collector-slots: 54
+  '5':
+    interval-seconds: 5
+    output-count: 2
+    fuel-capacity-items: 320
+    buffer-capacity-items: 320
+    value-multiplier: 4.0
+    collector-slots: 54
+types:
+  cobblestone_generator:
+    output: minecraft:cobblestone
+    fuel-per-item: 1
+    base-value: 6
+  timber_generator:
+    output: minecraft:oak_log
+    fuel-per-item: 1
+    base-value: 9
+  iron_generator:
+    output: minecraft:raw_iron
+    fuel-per-item: 2
+    base-value: 21
+  basic_smelter:
+    input: minecraft:raw_iron
+    output: minecraft:iron_ingot
+    fuel-per-item: 1
+    base-value: 24
+  resource_collector:
+    base-value: 18
+# 原图材料方向中未落地的金币/研究图纸不引入新经济依赖，以现有 CE 材料配置。
+upgrades:
+  '2':
+    minecraft:cobblestone: 64
+    genlite:gear: 4
+  '3':
+    minecraft:iron_ingot: 32
+    genlite:copper_coil: 8
+    genlite:mechanical_parts: 16
+  '4':
+    genlite:storage_module: 4
+    genlite:industrial_chip: 4
+    genlite:refined_alloy: 8
+  '5':
+    genlite:refined_alloy: 16
+    genlite:industrial_chip: 8
+    genlite:ancient_core: 1

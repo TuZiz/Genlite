@@ -1,0 +1,6 @@
+Use case: stylized-concept
+Asset type: Minecraft Java resource pack item sprite for a 32x32 texture, shown enlarged at 1024x1024.
+Primary request: Draw ONE basic upgrade unit, a small compact square copper-and-iron token/module with a mint teal upward arrow inset into its face. It is an item for upgrading small skyblock resource generators, not a large machine or a stone.
+Style: authentic low-resolution Minecraft pixel art, visibly coarse 32x32 pixel grid enlarged exactly 32 times with nearest-neighbor hard edges. Restrained vanilla-style shading, 12 to 16 colors, dark charcoal outline, worn muted copper border, gray metal bevels, teal center. Clear simple silhouette and readable at 32 pixels.
+Composition: one centered item, slight classic Minecraft inventory item angle, occupies approximately 24x24 of the 32x32 logical grid. Leave an empty 4-pixel border on all sides. No ground, no cast shadow, no text, no letters, no numbers, no logo, no UI frame, no extra objects.
+Background: completely flat pure magenta #FF00FF, only for chroma-key conversion to the Minecraft transparent sprite. Never use magenta anywhere on the item itself. No gradient or soft glow spilling into the background. Sharp pixel edges only.

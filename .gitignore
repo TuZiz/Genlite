@@ -1,0 +1,12 @@
+.reference/
+__pycache__/
+dist/
+target/
+.idea/
+
+# Local deployment backups and temporary files
+backups/
+*.log
+*.tmp
+.env
+.env.*

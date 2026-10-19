@@ -1,0 +1,81 @@
+# ==========================================
+#          资源收集器独立配置
+#   修改后正常重启；文本使用 MiniMessage
+# ==========================================
+schema-version: 1
+presentation-version: 1
+materials-version: 2
+storage-version: 2
+id: resource_collector
+base-value: 18
+
+# 物品名称与 Lore 独立配置；燃料为内部能量单位，拆下后显示实际保留数量。
+# Lore 支持 <level> <fuel> <fuel_capacity> <buffer> <buffer_capacity> <seconds> <count> <fuel_per_item> <mode> <stored_items> <used_slots> <slots>
+display:
+  lore-version: 3
+  name: '<#78FFD6><bold>普通收集器</bold><#FFD700>[初级]'
+  lore:
+    - ' <#7F8C8D>❖ 物流仓储终端'
+    - ''
+    - ' <#89F7FE>▪ <#C2E9FB>内部物品：<#FFD700><stored_items> 个'
+    - ' <#89F7FE>▪ <#C2E9FB>已用槽位：<#A8FF78><used_slots> <#7F8C8D>/ <#89F7FE><slots> <#7F8C8D>(每格上限 64 个)'
+    - ''
+    - ' <#90A4AE>自动汇集并存储周边生成器的产出物，'
+    - ' <#90A4AE>有效范围 <#FFB75E>8×8 <#90A4AE>且垂直高度差不超过 <#FFB75E>4 格<#90A4AE>。'
+    - ''
+    - ' <#FFDF00>▶ <#FFF9C4>[右键机器] <#E0F7FA>打开仓储与升级面板'
+    - ' <#FFDF00>▶ <#FFF9C4>[绑定工具] <#E0F7FA>右键与范围内生成器建立连接'
+    - ' <#A8FF78>▶ <#78FFD6>[潜行+右键 / 镐挖掘] <#E0F7FA>安全拆除并保留库存'
+
+# 全息字每秒更新一次；height 为相对方块底面的高度，范围 1..4 格。
+# 支持 <machine> <level> <status> <fuel> <fuel_capacity> <buffer> <buffer_capacity> <input> <seconds> <count> <value> <used_slots> <slots> <mode> <binding> <locked> <paused>
+hologram:
+  layout-version: 2
+  enabled: true
+  height: 1.05
+  scale: 0.65
+  lines:
+    - '<machine>'
+    - '<status> <#5C6B73>| <#89F7FE>📦 <#C2E9FB>仓储：<#A8FF78><used_slots><#7F8C8D>/<#89F7FE><slots> 槽'
+
+# x/z 相对坐标各 -4..3，恰好 8×8；高度差单位为格。
+collection:
+  min-offset: -4
+  max-offset: 3
+  max-height-difference: 4
+
+# 仓储固定 27 个普通物品格，每格最多 64 个。
+levels:
+  '1':
+    value-multiplier: 1.0
+    slots: 27
+  '2':
+    value-multiplier: 1.5
+    slots: 27
+  '3':
+    value-multiplier: 2.0
+    slots: 27
+  '4':
+    value-multiplier: 2.8
+    slots: 27
+  '5':
+    value-multiplier: 4.0
+    slots: 27
+
+# 目标等级及其所需材料，可按每种机器单独修改。
+upgrades:
+  '2':
+    minecraft:cobblestone: 64
+    minecraft:oak_log: 16
+  '3':
+    minecraft:iron_ingot: 32
+    minecraft:oak_log: 32
+    minecraft:cobblestone: 128
+  '4':
+    minecraft:iron_ingot: 96
+    minecraft:chest: 4
+    minecraft:cobblestone: 256
+  '5':
+    minecraft:iron_ingot: 192
+    minecraft:chest: 8
+    minecraft:cobblestone: 512

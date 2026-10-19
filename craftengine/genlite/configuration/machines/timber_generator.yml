@@ -1,0 +1,140 @@
+items:
+  genlite:timber_generator:
+    # 非方块底材避免客户端预测放置时短暂显示原版方块；放置仍由 block_item 处理。
+    material: paper
+    data:
+      item_name: '<italic:false><#D7AF65>木材生成器'
+      # CE 菜单展示一级空库存；拆下后的真实数值由 Genlite 按凭证更新。
+      lore:
+        - '<italic:false> <#7F8C8D>❖ 生态林木采集'
+        - ''
+        - '<italic:false> <#89F7FE>▪ <#C2E9FB>内部燃料：<#FFF6B7>0 <#7F8C8D>/ <#FFB75E>512 能量'
+        - '<italic:false> <#89F7FE>▪ <#C2E9FB>生产效率：<#A8FF78>每 10 秒 1 个 <#7F8C8D>(耗能 1/个)'
+        - '<italic:false> <#89F7FE>▪ <#C2E9FB>默认输出：<#FFFFFF><#FFB75E>⏏ 原地掉落'
+        - ''
+        - '<italic:false> <#90A4AE>无需树苗投入，消耗燃料自动培育并砍伐 <#FFB75E>橡木原木<#90A4AE>，'
+        - '<italic:false> <#90A4AE>随等级提升可大幅缩短生产耗时并扩容。'
+        - ''
+        - '<italic:false> <#FFDF00>▶ <#FFF9C4>[右键机器] <#E0F7FA>打开控制面板'
+        - '<italic:false> <#FFDF00>▶ <#FFF9C4>[绑定工具] <#E0F7FA>右键连接至收集器'
+        - '<italic:false> <#A8FF78>▶ <#78FFD6>[潜行+右键 / 镐挖掘] <#E0F7FA>安全拆除并保留数据'
+    model: genlite:item/timber_generator
+    behavior:
+      type: block_item
+      block: genlite:timber_generator
+blocks:
+  genlite:timber_generator:
+    settings:
+      hardness: 3.0
+      resistance: 6.0
+      replaceable: false
+      push_reaction: block
+      can_occlude: false
+      is_suffocating: false
+      is_view_blocking: false
+      tags:
+      - minecraft:mineable/pickaxe
+    loot:
+      pools:
+      - rolls: 1
+        conditions:
+        - type: survives_explosion
+        entries:
+        - type: item
+          item: genlite:timber_generator
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+        mode:
+          type: int
+          min: 0
+          max: 2
+          default: 0
+      appearances:
+        facing=north,mode=0:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_paused
+            y: 0
+        facing=east,mode=0:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_paused
+            y: 90
+        facing=south,mode=0:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_paused
+            y: 180
+        facing=west,mode=0:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_paused
+            y: 270
+        facing=north,mode=1:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_running
+            y: 0
+        facing=east,mode=1:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_running
+            y: 90
+        facing=south,mode=1:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_running
+            y: 180
+        facing=west,mode=1:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_running
+            y: 270
+        facing=north,mode=2:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_no_fuel
+            y: 0
+        facing=east,mode=2:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_no_fuel
+            y: 90
+        facing=south,mode=2:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_no_fuel
+            y: 180
+        facing=west,mode=2:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/timber_generator_no_fuel
+            y: 270
+      variants:
+        facing=north,mode=0:
+          appearance: facing=north,mode=0
+        facing=east,mode=0:
+          appearance: facing=east,mode=0
+        facing=south,mode=0:
+          appearance: facing=south,mode=0
+        facing=west,mode=0:
+          appearance: facing=west,mode=0
+        facing=north,mode=1:
+          appearance: facing=north,mode=1
+        facing=east,mode=1:
+          appearance: facing=east,mode=1
+        facing=south,mode=1:
+          appearance: facing=south,mode=1
+        facing=west,mode=1:
+          appearance: facing=west,mode=1
+        facing=north,mode=2:
+          appearance: facing=north,mode=2
+        facing=east,mode=2:
+          appearance: facing=east,mode=2
+        facing=south,mode=2:
+          appearance: facing=south,mode=2
+        facing=west,mode=2:
+          appearance: facing=west,mode=2

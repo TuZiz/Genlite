@@ -1,0 +1,73 @@
+recipes:
+  genlite:cobblestone_generator:
+    type: shaped
+    pattern:
+    - CCC
+    - CLC
+    - CCC
+    ingredients:
+      C: minecraft:cobblestone
+      L: minecraft:oak_log
+    result:
+      id: genlite:cobblestone_generator
+      count: 1
+  genlite:timber_generator:
+    type: shaped
+    pattern:
+    - LLL
+    - LCL
+    - LLL
+    ingredients:
+      L: minecraft:oak_log
+      C: minecraft:cobblestone
+    result:
+      id: genlite:timber_generator
+      count: 1
+  genlite:iron_generator:
+    type: shaped
+    pattern:
+    - CIC
+    - III
+    - CIC
+    ingredients:
+      C: minecraft:cobblestone
+      I: minecraft:iron_ingot
+    result:
+      id: genlite:iron_generator
+      count: 1
+  genlite:resource_collector:
+    type: shaped
+    pattern:
+    - LIL
+    - ICI
+    - LIL
+    ingredients:
+      L: minecraft:oak_log
+      I: minecraft:iron_ingot
+      C: minecraft:chest
+    result:
+      id: genlite:resource_collector
+      count: 1
+  genlite:binding_tool:
+    type: shaped
+    pattern:
+    - ' I '
+    - ' SI'
+    - 'S  '
+    ingredients:
+      I: minecraft:iron_ingot
+      S: minecraft:stick
+    result:
+      id: genlite:binding_tool
+      count: 1
+  genlite:fuel:
+    type: shaped
+    pattern:
+    - LLL
+    - L L
+    - LLL
+    ingredients:
+      L: minecraft:oak_log
+    result:
+      id: genlite:fuel
+      count: 4

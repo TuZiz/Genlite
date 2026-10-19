@@ -1,0 +1,63 @@
+items:
+  genlite:basic_upgrade_unit:
+    material: paper
+    data:
+      item_name: '<italic:false><#68C9B6>初级升级单元'
+      lore:
+        - '<italic:false><#94A3B8>用于原石、木材和铁生成器升级。'
+        - '<italic:false><#94A3B8>右键生成器，在菜单中点击升级。'
+        - '<italic:false><#64748B>升级只消耗此物品，数量以菜单显示为准。'
+    texture: genlite:item/basic_upgrade_unit
+  genlite:mechanical_parts:
+    data:
+      item_name: '<italic:false><#A2B5BB>铁片'
+    texture: genlite:item/mechanical_parts
+  genlite:gear:
+    data:
+      item_name: '<italic:false><#D7AF65>铁环'
+    texture: genlite:item/gear
+  genlite:copper_coil:
+    data:
+      item_name: '<italic:false><#D38B60>铜丝'
+    texture: genlite:item/copper_coil
+  genlite:machine_frame:
+    data:
+      item_name: '<italic:false><#82979F>铁架'
+    texture: genlite:item/machine_frame
+  genlite:energy_cell:
+    data:
+      item_name: '<italic:false><#68C9C2>能量石'
+    texture: genlite:item/energy_cell
+  genlite:storage_module:
+    data:
+      item_name: '<italic:false><#D7AF65>木箱'
+    texture: genlite:item/storage_module
+  genlite:mana_shard:
+    data:
+      item_name: '<italic:false><#A58DE0>魔力碎片'
+    texture: genlite:item/mana_shard
+  genlite:ancient_core:
+    data:
+      item_name: '<italic:false><#C2A0EA>远古核心'
+    texture: genlite:item/ancient_core
+  genlite:industrial_chip:
+    data:
+      item_name: '<italic:false><#78B7A2>晶片'
+    texture: genlite:item/industrial_chip
+  genlite:refined_alloy:
+    data:
+      item_name: '<italic:false><#B9CBD1>合金'
+    texture: genlite:item/refined_alloy
+  genlite:fuel:
+    data:
+      item_name: '<italic:false><#D98B50>燃料'
+    texture: genlite:item/fuel
+    settings:
+      fuel_time: 1600
+  genlite:binding_tool:
+    data:
+      item_name: '<italic:false><#68B9B1>绑定工具'
+      hide_tooltip:
+        - attribute_modifiers
+    model: genlite:item/binding_tool
+    material: iron_pickaxe

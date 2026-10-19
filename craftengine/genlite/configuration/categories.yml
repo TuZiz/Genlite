@@ -1,0 +1,12 @@
+categories:
+  genlite:content:
+    name: '<italic:false><#D7AF65>空岛经营'
+    icon: genlite:resource_collector
+    list:
+    - genlite:cobblestone_generator
+    - genlite:timber_generator
+    - genlite:iron_generator
+    - genlite:resource_collector
+    - genlite:fuel
+    - genlite:binding_tool
+    - genlite:basic_upgrade_unit

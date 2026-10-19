@@ -1,0 +1,20 @@
+name: Genlite
+version: 1.0.0
+main: cn.genlite.GenlitePlugin
+api-version: '26.3'
+folia-supported: true
+depend:
+  - CraftEngine
+softdepend:
+  - DreamSkyblock
+commands:
+  genlite:
+    description: '生成器与收集器'
+    permission: genlite.use
+permissions:
+  genlite.use:
+    description: '使用生成器、收集器、绑定工具和领取功能'
+    default: true
+  genlite.admin:
+    description: '发放 Genlite 机器和材料'
+    default: op

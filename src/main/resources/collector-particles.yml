@@ -1,0 +1,12 @@
+# 产物成功传入收集器后，播放从生成器指向收集器的粒子束。
+schema-version: 1
+enabled: true
+# 飞行时间，单位 tick（20 tick = 1 秒），范围 4..40。
+duration-ticks: 12
+# 各类型光束使用不同 RGB 十六进制颜色：原石冰蓝、木材翠绿、铁暖金。
+colors:
+  cobblestone_generator: '#7DD3FC'
+  timber_generator: '#6EE7A0'
+  iron_generator: '#FBBF6A'
+# 粒子尺寸范围 0.1..2.0。
+size: 0.7

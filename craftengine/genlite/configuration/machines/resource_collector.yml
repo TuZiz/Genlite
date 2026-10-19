@@ -1,0 +1,139 @@
+items:
+  genlite:resource_collector:
+    material: chest
+    data:
+      item_name: '<italic:false><#D7AF65>普通收集器[初级]'
+      # CE 菜单展示一级空库存；拆下后的真实数值由 Genlite 按凭证更新。
+      lore:
+        - '<italic:false> <#7F8C8D>❖ 物流仓储终端'
+        - ''
+        - '<italic:false> <#89F7FE>▪ <#C2E9FB>内部物品：<#FFD700>0 个'
+        - '<italic:false> <#89F7FE>▪ <#C2E9FB>已用槽位：<#A8FF78>0 <#7F8C8D>/ <#89F7FE>27 <#7F8C8D>(每格上限 64 个)'
+        - ''
+        - '<italic:false> <#90A4AE>自动汇集并存储周边生成器的产出物，'
+        - '<italic:false> <#90A4AE>有效范围 <#FFB75E>8×8 <#90A4AE>且垂直高度差不超过 <#FFB75E>4 格<#90A4AE>。'
+        - ''
+        - '<italic:false> <#FFDF00>▶ <#FFF9C4>[右键机器] <#E0F7FA>打开仓储与升级面板'
+        - '<italic:false> <#FFDF00>▶ <#FFF9C4>[绑定工具] <#E0F7FA>右键与范围内生成器建立连接'
+        - '<italic:false> <#A8FF78>▶ <#78FFD6>[潜行+右键 / 镐挖掘] <#E0F7FA>安全拆除并保留库存'
+    model: genlite:item/resource_collector
+    behavior:
+      type: block_item
+      block: genlite:resource_collector
+blocks:
+  genlite:resource_collector:
+    settings:
+      hardness: 3.0
+      resistance: 6.0
+      replaceable: false
+      push_reaction: block
+      can_occlude: false
+      is_suffocating: false
+      is_view_blocking: false
+      tags:
+      - minecraft:mineable/pickaxe
+    loot:
+      pools:
+      - rolls: 1
+        conditions:
+        - type: survives_explosion
+        entries:
+        - type: item
+          item: genlite:resource_collector
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+        mode:
+          type: int
+          min: 0
+          max: 2
+          default: 0
+      # 低矮碰撞：闭合底部活板门承载状态，高度 3/16 格，不附加活板门行为。
+      appearances:
+        facing=north,mode=0:
+          state: acacia_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_paused
+            y: 0
+        facing=east,mode=0:
+          state: acacia_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_paused
+            y: 90
+        facing=south,mode=0:
+          state: acacia_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_paused
+            y: 180
+        facing=west,mode=0:
+          state: acacia_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_paused
+            y: 270
+        facing=north,mode=1:
+          state: birch_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_running
+            y: 0
+        facing=east,mode=1:
+          state: birch_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_running
+            y: 90
+        facing=south,mode=1:
+          state: birch_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_running
+            y: 180
+        facing=west,mode=1:
+          state: birch_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_running
+            y: 270
+        facing=north,mode=2:
+          state: dark_oak_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_no_fuel
+            y: 0
+        facing=east,mode=2:
+          state: dark_oak_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_no_fuel
+            y: 90
+        facing=south,mode=2:
+          state: dark_oak_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_no_fuel
+            y: 180
+        facing=west,mode=2:
+          state: dark_oak_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]
+          model:
+            path: genlite:block/resource_collector_no_fuel
+            y: 270
+      variants:
+        facing=north,mode=0:
+          appearance: facing=north,mode=0
+        facing=east,mode=0:
+          appearance: facing=east,mode=0
+        facing=south,mode=0:
+          appearance: facing=south,mode=0
+        facing=west,mode=0:
+          appearance: facing=west,mode=0
+        facing=north,mode=1:
+          appearance: facing=north,mode=1
+        facing=east,mode=1:
+          appearance: facing=east,mode=1
+        facing=south,mode=1:
+          appearance: facing=south,mode=1
+        facing=west,mode=1:
+          appearance: facing=west,mode=1
+        facing=north,mode=2:
+          appearance: facing=north,mode=2
+        facing=east,mode=2:
+          appearance: facing=east,mode=2
+        facing=south,mode=2:
+          appearance: facing=south,mode=2
+        facing=west,mode=2:
+          appearance: facing=west,mode=2

@@ -1,0 +1,18 @@
+# 普通箱子式收纳：27 个物品格，每格最多 64；底行仅关闭。
+schema-version: 3
+presentation-version: 1
+title: '<machine> <#7F8C8D>· <#A8FF78><used_slots>/<slots>'
+shape:
+- 'OOOOOOOOO'
+- 'OOOOOOOOO'
+- 'OOOOOOOOO'
+- '    X    '
+elements:
+  O:
+    material: AIR
+    name: '<#A5BBC1>物品'
+    action: stock
+  X:
+    material: BARRIER
+    name: '<#E58B50>关闭'
+    action: close
