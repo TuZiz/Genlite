@@ -19,15 +19,21 @@ public final class InventoryTransfers {
     private final Messages messages;
     private final Set<UUID> busy=ConcurrentHashMap.newKeySet();
     private final DirectWithdrawals direct;
-    private final CursorDeposits cursor;
+    private final ItemDeposits deposits;
     public InventoryTransfers(JavaPlugin p,GameTasks t,MachineEngine e,CraftItems i,Messages m,java.util.function.BiPredicate<UUID,UUID> member) {
         plugin=p;tasks=t;engine=e;items=i;messages=m;
         direct=new DirectWithdrawals(p,t,e,i,m,new ContainerStock(e.rules(),member),busy);
-        cursor=new CursorDeposits(p,t,e,i,m,new ContainerStock(e.rules(),member),busy);
+        deposits=new ItemDeposits(p,t,e,i,m,new ContainerStock(e.rules(),member),busy);
     }
     public void take(Player p,ContainerStock.Source source,int limit,java.util.function.BooleanSupplier allowed,Runnable refresh) {direct.take(p,source,limit,allowed,refresh);}
     public void take(Player p,ContainerStock.Source source,int limit,java.util.function.BooleanSupplier allowed,Runnable refresh,boolean toCursor) {direct.take(p,source,limit,allowed,refresh,toCursor);}
-    public void fromCursor(Player p,UUID machine,String item,int amount,java.util.function.BooleanSupplier allowed,Runnable refresh) {cursor.deposit(p,machine,item,amount,allowed,refresh);}
+    public void fromCursor(Player p,UUID machine,String item,int amount,java.util.function.BooleanSupplier allowed,Runnable refresh) {deposits.deposit(p,machine,item,amount,allowed,refresh);}
+    public void fuelFromCursor(Player p,UUID machine,String item,int amount,java.util.function.BooleanSupplier allowed,Runnable refresh) {
+        deposits.deposit(p,new ContainerStock.Source(ContainerStock.Kind.FUEL,machine,item),amount,allowed,refresh);
+    }
+    public void fuelFromSlot(Player p,UUID machine,String item,int slot,java.util.function.BooleanSupplier allowed,Runnable refresh) {
+        deposits.fromSlot(p,new ContainerStock.Source(ContainerStock.Kind.FUEL,machine,item),Integer.MAX_VALUE,slot,allowed,refresh);
+    }
     public void recover(Player p) {direct.recover(p);}
 
     public void mutate(Player player,Function<WorldState.Draft,Void> action,Runnable after) {

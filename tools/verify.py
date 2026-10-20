@@ -110,7 +110,7 @@ with zipfile.ZipFile(jar) as z:
     assert 'machines.yml' not in names
     assert not any(n.startswith('machines/') for n in names)
     assert len([n for n in names if n.startswith('genlite/') and n.endswith('.yml')])==4
-    assert all(n in names for n in ('genlite/原石生成器.yml','genlite/普通收集器.yml','warehouse.yml','gui/warehouse.yml','gui/generator.yml','gui/collector.yml','lang/zh_cn.yml','plugin.yml'))
+    assert all(n in names for n in ('genlite/原石生成器.yml','genlite/普通收集器.yml','warehouse.yml','gui/warehouse.yml','gui/generator.yml','gui/collector.yml','gui/fuel.yml','lang/zh_cn.yml','plugin.yml'))
     assert 'gui/storage.yml' not in names
     assert not any(n.endswith(('WarehouseMenus.class','WarehouseSession.class','WarehouseActions.class')) for n in names)
 with Image.open(ASSETS/'textures/item/fuel.png') as im:

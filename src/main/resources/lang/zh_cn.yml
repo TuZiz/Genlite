@@ -5,6 +5,7 @@
 schema-version: 4
 presentation-version: 1
 upgrade-item-version: 1
+fuel-menu-version: 1
 
 # ── 错误与限制提示 (柔和珊瑚红 #FF6B6B + 冰晶白正文 #E0F7FA) ──
 permission: '<#FF6B6B>✖ <#E0F7FA>你没有权限操作这台机器。'
@@ -18,6 +19,7 @@ world: '<#FF6B6B>✖ <#E0F7FA>该机器仅限在 <#FFD700>个人家园 <#E0F7FA>
 materials: '<#FF6B6B>✖ <#E0F7FA>升级所需材料不足，请悬停升级按钮查看详情。'
 inventory-full: '<#FF6B6B>✖ <#E0F7FA>背包空间不足！未装下的物品已保留在原容器，其余将在腾出空位后自动发放。'
 unsupported-item: '<#FF6B6B>✖ <#E0F7FA>仅支持存入标准原版资源，无法存入带有附魔、耐久或特殊属性的数据物品。'
+fuel-invalid: '<#FFB75E>请放入这台生成器使用的燃料，其他物品无法填充。'
 
 # ── 警告与冷却提示 (暖金 #FFB75E + 冰晶白正文 #E0F7FA) ──
 busy: '<#FFB75E>⏳ <#E0F7FA>操作正在处理中，请勿频繁点击。'

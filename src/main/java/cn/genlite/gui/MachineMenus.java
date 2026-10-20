@@ -26,10 +26,15 @@ public final class MachineMenus implements Listener {
     private final InventoryTransfers transfers;
     private final cn.genlite.display.MachineText text;
     private final ContainerMenus warehouse;
+    private final FuelMenus fuel;
+    private final GameTasks tasks;
     private final Map<UUID,MenuSession> sessions=new java.util.concurrent.ConcurrentHashMap<>();
-    public MachineMenus(Map<String,YamlConfiguration> configs,MachineEngine e,MachineActions a,IslandAccess d,CraftItems i,Messages m,InventoryTransfers t,cn.genlite.display.MachineText text,ContainerMenus warehouse) {
+    public MachineMenus(Map<String,YamlConfiguration> configs,MachineEngine e,MachineActions a,IslandAccess d,CraftItems i,Messages m,InventoryTransfers t,cn.genlite.display.MachineText text,ContainerMenus warehouse,GameTasks tasks) {
         menus=configs;engine=e;actions=a;dream=d;items=i;messages=m;transfers=t;this.text=text;this.warehouse=warehouse;
+        this.tasks=tasks;
+        fuel=new FuelMenus(configs.get("fuel"),e,i,m,t,tasks,text,this::allowed,(p,id) -> open(p,id,"generator"));
     }
+    public FuelMenus fuel() {return fuel;}
     public boolean allowed(Player p,Machine m) {
         return m!=null && !m.removed() && p.hasPermission("genlite.use") && dream.member(m.home(),p.getUniqueId())
                 && (!m.locked() || m.owner().equals(p.getUniqueId()))
@@ -91,7 +96,8 @@ public final class MachineMenus implements Listener {
                 if(m.level()>=5) {messages.send(p,"max-level");return;}
                 transfers.paid(p,engine.rules().upgrade(m),d -> {actions.upgrade(d,m.id(),user,m.level());return null;},reopen);
             }
-            case "fuel","input" -> {
+            case "fuel" -> tasks.player(p,() -> {if(sessions.get(user)==s && allowed(p,engine.snapshot().machines().get(m.id()))) fuel.open(p,m.id());},() -> {});
+            case "input" -> {
                 String item=action.equals("fuel")?engine.rules().fuelItem(m):engine.rules().types().get(m.type()).input();
                 if(item==null) {messages.send(p,"unavailable");return;}
                 if(event.isRightClick()) transfers.take(p,new ContainerStock.Source(ContainerStock.Kind.FUEL,m.id(),item),64,() -> allowed(p,engine.snapshot().machines().get(m.id())),reopen);

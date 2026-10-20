@@ -14,7 +14,7 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
     public static PluginFiles load(JavaPlugin plugin) throws Exception {
         Path root=plugin.getDataFolder().toPath();
         Map<String,YamlConfiguration> files=new HashMap<>();
-        for (String name : List.of("物品名称.yml","config.yml","warehouse.yml","collector-particles.yml","lang/zh_cn.yml","gui/generator.yml","gui/collector.yml","gui/warehouse.yml")) {
+        for (String name : List.of("物品名称.yml","config.yml","warehouse.yml","collector-particles.yml","lang/zh_cn.yml","gui/generator.yml","gui/collector.yml","gui/warehouse.yml","gui/fuel.yml")) {
             Path path=root.resolve(name); Files.createDirectories(path.getParent());
             if (!Files.exists(path)) {
                 try (InputStream in=plugin.getResource(name)) {
@@ -29,7 +29,8 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
             if(outputConfig) UpgradeUnitMenuMigration.apply(path,name,yaml,plugin.getResource(name));
             if(name.equals("lang/zh_cn.yml")) HomeHologramMessages.apply(path,yaml,plugin.getResource(name));
             if(outputConfig || name.equals("gui/collector.yml")) PresentationMigration.menu(path,name,yaml,plugin.getResource(name));
-            int expected=outputConfig?4:name.equals("gui/collector.yml")?3:(name.equals("warehouse.yml") || name.startsWith("gui/"))?2:1;
+            if(outputConfig) FuelMenuMigration.apply(path,name,yaml,plugin.getResource(name));
+            int expected=outputConfig?4:name.equals("gui/collector.yml")?3:name.equals("gui/fuel.yml")?1:(name.equals("warehouse.yml") || name.startsWith("gui/"))?2:1;
             if (yaml.getInt("schema-version")!=expected) throw new IllegalArgumentException(name+":schema-version="+yaml.get("schema-version")+" unsupported; original preserved");
             files.put(name,yaml);
         }
@@ -40,11 +41,12 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
         String filename=files.get("config.yml").getString("storage-file");
         if (filename==null || !filename.matches("[a-zA-Z0-9_.-]+\\.json")) throw new IllegalArgumentException("config.yml:storage-file="+filename);
         Map<String,YamlConfiguration> menus=new HashMap<>();
-        for (String menu:List.of("generator","collector","warehouse")) {
+        for (String menu:List.of("generator","collector","warehouse","fuel")) {
             YamlConfiguration gui=files.get("gui/"+menu+".yml");
             List<String> shape=gui.getStringList("shape");
             if (shape.isEmpty() || shape.size()>6 || shape.stream().anyMatch(row -> row.length()!=9)) throw new IllegalArgumentException("gui/"+menu+".yml:shape");
             for (char c:String.join("",shape).toCharArray()) if (c!=' ' && !gui.isConfigurationSection("elements."+c)) throw new IllegalArgumentException("gui/"+menu+".yml:elements."+c);
+            if(menu.equals("fuel")) FuelMenuMigration.validate(gui);
             menus.put(menu,gui);
         }
         int slots=new ConfigDocument("warehouse.yml",files.get("warehouse.yml")).integer("slots",9,45);

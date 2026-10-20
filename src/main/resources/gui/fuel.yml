@@ -1,0 +1,44 @@
+# 燃料放入中央空槽后立即存入机器；界面本身不暂存玩家物品。
+schema-version: 1
+title: '<#FFB75E>燃料填充 <#7F8C8D>· <machine>'
+shape:
+  - '#########'
+  - '#I##F##W#'
+  - '####B####'
+elements:
+  '#':
+    material: GRAY_STAINED_GLASS_PANE
+    name: ''
+    action: none
+  I:
+    material: CAMPFIRE
+    name: '<#FFB75E>燃料与产出'
+    lore:
+      - '<#C2E9FB>可用燃料：<fuel_item>'
+      - '<#C2E9FB>每个燃料：<#FFF6B7><fuel_units> 能量'
+      - '<#C2E9FB>剩余能量：<#FFF6B7><fuel> / <fuel_capacity>'
+      - '<#C2E9FB>还可放入：<#A8FF78><fuel_space> 个燃料'
+      - ''
+      - '<#C2E9FB>产出物品：<output_item>'
+      - '<#C2E9FB>产出效率：<#A8FF78>每 <seconds> 秒 <count> 个'
+      - '<#C2E9FB>产出耗能：<#FFF6B7><fuel_per_item> 能量 / 个'
+      - ''
+      - '<#FFF9C4>将燃料放入中央空槽即可填充'
+      - '<#C2E9FB>左键放入一组，右键放入一个'
+      - '<#C2E9FB>也可 Shift 点击背包中的燃料'
+      - '<#C2E9FB>容量不足时，多余燃料保留在原处'
+    action: info
+  F:
+    action: deposit
+  W:
+    material: HOPPER
+    name: '<#89F7FE>取回燃料'
+    lore:
+      - '<#C2E9FB>左键取回一组，右键取回一个'
+      - '<#C2E9FB>Shift 点击直接放入背包'
+      - '<#90A4AE>仅可取回尚未消耗的完整燃料'
+    action: withdraw
+  B:
+    material: ARROW
+    name: '<#C2E9FB>返回生成器'
+    action: back

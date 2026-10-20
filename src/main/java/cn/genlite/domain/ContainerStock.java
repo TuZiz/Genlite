@@ -68,6 +68,13 @@ public final class ContainerStock {
             stock.merge(source.item(),BigInteger.valueOf(amount),BigInteger::add);d.warehouses.put(source.id(),Map.copyOf(stock));
         } else {
             Machine m=machines.require(d,source.id(),player);
+            if(source.kind()==Kind.FUEL) {
+                if(m.collectorType() || !source.item().equals(rules.fuelItem(m))) throw new IllegalArgumentException("unsupported-item");
+                if(amount>rules.fuelSpace(m)) throw new IllegalArgumentException("full");
+                machines.deposit(d,m.id(),player,"fuel",amount,m.level());
+                return;
+            }
+            if(source.kind()!=Kind.COLLECTOR) throw new IllegalArgumentException("unsupported-item");
             if(!m.collectorType() || rules.types().values().stream().noneMatch(t -> source.item().equals(t.output()))) throw new IllegalArgumentException("unsupported-item");
             if(rules.capacityFor(m.inventory(),source.item(),rules.level(m).collectorSlots())<amount) throw new IllegalArgumentException("full");
             var stock=new HashMap<>(m.inventory());stock.merge(source.item(),amount,Math::addExact);d.machines.put(m.id(),m.contents(m.fuel(),m.input(),m.buffer(),stock));

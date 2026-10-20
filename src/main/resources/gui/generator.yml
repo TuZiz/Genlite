@@ -6,6 +6,7 @@ schema-version: 4
 item-names-version: 1
 presentation-version: 1
 upgrade-item-version: 1
+fuel-menu-version: 1
 
 # 菜单标题：使用柔和金黄搭配青蓝等级标识
 title: '<machine>'
@@ -47,8 +48,7 @@ elements:
       - ' <#89F7FE>▪ <#C2E9FB>产出效率：<#A8FF78>每 <seconds> 秒 <count> 个'
       - ' <#89F7FE>▪ <#C2E9FB>产出耗能：<#FFF6B7><fuel_per_item> 能量 / 个'
       - ''
-      - ' <#FFDF00>▶ <#FFF9C4>[左键] <#E0F7FA>从背包存入最多 64 个燃料'
-      - ' <#FFDF00>▶ <#FFF9C4>[右键] <#E0F7FA>取出完整燃料物品'
+      - ' <#FFDF00>▶ <#FFF9C4>[点击] <#E0F7FA>打开燃料填充界面'
     action: fuel
 
   O:

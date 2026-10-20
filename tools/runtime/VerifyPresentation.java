@@ -27,6 +27,7 @@ class VerifyPresentation {
             var values=text.variables(m,Map.of(m.id(),m),Set.of(m.id()));
             values.put("item",messages.label("genlite:basic_upgrade_unit"));
             values.put("amount",Component.text(3));values.put("owned",Component.text(2));
+            values.put("fuel_space",Component.text(loaded.rules().fuelSpace(m)));
             for(var entry:yaml.getValues(true).entrySet()) {
                 if(entry.getValue() instanceof String s) add(output,file,entry.getKey(),s,messages,values);
                 if(entry.getValue() instanceof List<?> lines) for(int i=0;i<lines.size();i++)

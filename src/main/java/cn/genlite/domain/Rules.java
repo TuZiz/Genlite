@@ -19,6 +19,10 @@ public record Rules(Map<String, Type> types, int warehouseSlots) {
     public Map<String,Integer> upgrade(Machine m) { return types.get(m.type()).upgrades().get(m.level()+1); }
     public String fuelItem(Machine m) { return types.get(m.type()).fuel().item(); }
     public int fuelUnits(Machine m) { return m.collectorType()?0:types.get(m.type()).fuel().units(); }
+    /** Whole fuel items that fit; a partly consumed item still occupies its remaining energy. */
+    public int fuelSpace(Machine m) {
+        return m.collectorType()?0:(int)Math.max(0,((long)level(m).fuelItems()*fuelUnits(m)-m.fuel())/fuelUnits(m));
+    }
     public long value(Machine m) { return m.removed() ? 0 : Math.round(types.get(m.type()).baseValue * level(m).valueMultiplier); }
     public boolean inRange(Machine generator, Machine collector) {
         Position a = generator.position(), b = collector.position();
