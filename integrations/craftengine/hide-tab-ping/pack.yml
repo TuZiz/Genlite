@@ -1,0 +1,6 @@
+author: 'Genlite'
+version: '1.0.0'
+schema-version: 1
+description: '隐藏 TAB 列表的延迟信号格与无连接红叉'
+namespace: 'minecraft'
+enable: true
