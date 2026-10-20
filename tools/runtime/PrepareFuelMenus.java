@@ -11,12 +11,15 @@ public final class PrepareFuelMenus {
         for(String name:List.of("gui/generator.yml","lang/zh_cn.yml")) {
             Path path=root.resolve(name);var yaml=new YamlConfiguration();yaml.options().parseComments(true);yaml.load(path.toFile());
             FuelMenuMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
+            if(name.equals("gui/generator.yml")) FuelChestMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
         }
         Path path=root.resolve("gui/fuel.yml");
         if(!Files.exists(path)) {Files.createDirectories(path.getParent());try(var stream=PrepareFuelMenus.class.getResourceAsStream("/gui/fuel.yml")) {
             if(stream==null) throw new IllegalStateException("Missing bundled gui/fuel.yml");Files.copy(stream,path);
         }}
-        var gui=new YamlConfiguration();gui.load(path.toFile());FuelMenuMigration.validate(gui);
+        var gui=new YamlConfiguration();gui.options().parseComments(true);gui.load(path.toFile());
+        FuelChestMigration.apply(path,"gui/fuel.yml",gui,PrepareFuelMenus.class.getResourceAsStream("/gui/fuel.yml"));
+        FuelChestMigration.validate(gui);
         System.out.println("Fuel menus prepared; no machine/player saves accessed.");
     }
 }

@@ -26,7 +26,7 @@ public final class FuelMenuMigration {
                     var lore=new ArrayList<>(yaml.getStringList(base+".lore"));
                     boolean changed=lore.removeIf(line -> line.equals(" <#FFDF00>▶ <#FFF9C4>[左键] <#E0F7FA>从背包存入最多 64 个燃料")
                             || line.equals(" <#FFDF00>▶ <#FFF9C4>[右键] <#E0F7FA>取出完整燃料物品"));
-                    if(changed) lore.add(defaults.getStringList("elements.F.lore").getLast());
+                    if(changed) lore.add(defaults.getStringList("elements.F.lore").getFirst());
                     yaml.set(base+".lore",lore);
                 }
             }
@@ -35,8 +35,6 @@ public final class FuelMenuMigration {
         }
     }
     static void validate(YamlConfiguration yaml) {
-        String shape=String.join("",yaml.getStringList("shape"));
-        if(shape.chars().filter(c -> c!=' ' && "deposit".equals(yaml.getString("elements."+(char)c+".action"))).count()!=1)
-            throw new IllegalArgumentException("gui/fuel.yml:shape must contain exactly one deposit slot");
+        FuelChestMigration.validate(yaml);
     }
 }

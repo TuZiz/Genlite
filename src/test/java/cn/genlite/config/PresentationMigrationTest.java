@@ -39,7 +39,7 @@ class PresentationMigrationTest {
         PresentationMigration.menu(path,"gui/generator.yml",yaml,getClass().getResourceAsStream("/gui/generator.yml"));
         assertEquals("<#123456>我的燃料",yaml.getString("elements.Z.name"));
         assertTrue(yaml.getStringList("elements.Z.lore").contains("<#123456>原有提示"));
-        assertEquals(5,yaml.getStringList("elements.Z.lore").size());
+        assertEquals(1,yaml.getStringList("elements.Z.lore").size());
         String once=Files.readString(path);
         PresentationMigration.menu(path,"gui/generator.yml",yaml,getClass().getResourceAsStream("/gui/generator.yml"));
         assertEquals(once,Files.readString(path));

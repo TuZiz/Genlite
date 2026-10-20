@@ -7,6 +7,7 @@ item-names-version: 1
 presentation-version: 1
 upgrade-item-version: 1
 fuel-menu-version: 1
+fuel-chest-version: 1
 
 # 菜单标题：使用柔和金黄搭配青蓝等级标识
 title: '<machine>'
@@ -38,17 +39,10 @@ elements:
 
   F:
     material: COAL
-    name: '<#FFB75E>✦ <#FFD700><bold>燃料储备</bold>'
+    name: '<#FFB75E>✦ <#FFD700><bold>燃料仓</bold>'
     lore:
-      - ''
-      - ' <#FFB75E>▪ <#FFE0B2>使用燃料：<fuel_item> <#7F8C8D>(每个 <#FFF6B7><fuel_units> <#7F8C8D>能量)'
-      - ' <#FFB75E>▪ <#FFE0B2>剩余燃料：<#FFF6B7><fuel> <#7F8C8D>/ <#FFB75E><fuel_capacity> 单位'
-      - ''
-      - ' <#89F7FE>▪ <#C2E9FB>产出物品：<output_item>'
-      - ' <#89F7FE>▪ <#C2E9FB>产出效率：<#A8FF78>每 <seconds> 秒 <count> 个'
-      - ' <#89F7FE>▪ <#C2E9FB>产出耗能：<#FFF6B7><fuel_per_item> 能量 / 个'
-      - ''
-      - ' <#FFDF00>▶ <#FFF9C4>[点击] <#E0F7FA>打开燃料填充界面'
+      - '<#C2E9FB>打开燃料仓，放入或取回燃料'
+      - '<#90A4AE>燃料与产出信息可在仓内玻璃板查看'
     action: fuel
 
   O:

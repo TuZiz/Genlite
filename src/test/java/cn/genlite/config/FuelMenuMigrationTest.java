@@ -16,7 +16,7 @@ class FuelMenuMigrationTest {
         FuelMenuMigration.apply(path,"gui/generator.yml",yaml,getClass().getResourceAsStream("/gui/generator.yml"));
         assertEquals(old,Files.readString(directory.resolve("generator.yml.fuel-menu-v0.bak")));
         assertEquals("保留",yaml.getString("custom"));assertTrue(Files.readString(path).contains("# 自定义注释"));
-        var lore=yaml.getStringList("elements.F.lore");assertEquals(2,lore.size());assertEquals("自定义介绍",lore.getFirst());assertTrue(lore.getLast().contains("打开燃料填充界面"));
+        var lore=yaml.getStringList("elements.F.lore");assertEquals(2,lore.size());assertEquals("自定义介绍",lore.getFirst());assertTrue(lore.getLast().contains("打开燃料仓"));
         var once=Files.readString(path);FuelMenuMigration.apply(path,"gui/generator.yml",load(path),getClass().getResourceAsStream("/gui/generator.yml"));assertEquals(once,Files.readString(path));
     }
     @Test void addsLanguageKeyWithoutReplacingCustomValuesAndRejectsFutureVersion() throws Exception {
@@ -26,9 +26,9 @@ class FuelMenuMigrationTest {
         Files.writeString(path,"schema-version: 4\n");var missing=load(path);
         FuelMenuMigration.apply(path,"lang/zh_cn.yml",missing,getClass().getResourceAsStream("/lang/zh_cn.yml"));assertTrue(missing.getString("fuel-invalid").contains("燃料"));
     }
-    @Test void inputLayoutHasExactlyOneEmptyDepositSlotAndAllSymbolsMapped() throws Exception {
+    @Test void chestLayoutHas27FuelSlotsAndMappedNavigationRow() throws Exception {
         var yaml=new YamlConfiguration();yaml.load(Path.of("src/main/resources/gui/fuel.yml").toFile());FuelMenuMigration.validate(yaml);
-        assertEquals(3,yaml.getStringList("shape").size());
+        assertEquals(4,yaml.getStringList("shape").size());
         for(String row:yaml.getStringList("shape")) {assertEquals(9,row.length());for(char c:row.toCharArray()) assertTrue(yaml.isConfigurationSection("elements."+c));}
         yaml.set("shape",List.of("FFFF#####"));assertThrows(IllegalArgumentException.class,() -> FuelMenuMigration.validate(yaml));
     }

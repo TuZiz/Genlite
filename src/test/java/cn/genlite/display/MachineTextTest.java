@@ -12,10 +12,11 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MachineTextTest {
-    @Test void headingsShowOneLevelAndFuelButtonUsesActualLevelValues() throws Exception {
+    @Test void headingsShowOneLevelAndChestPanesUseActualFuelValuesInsteadOfOuterButton() throws Exception {
         var loaded=MachineConfigurations.read(Path.of("src/main/resources/genlite"));
         var language=new YamlConfiguration();language.load(Path.of("src/main/resources/lang/zh_cn.yml").toFile());
         var menu=new YamlConfiguration();menu.load(Path.of("src/main/resources/gui/generator.yml").toFile());
+        var fuelMenu=new YamlConfiguration();fuelMenu.load(Path.of("src/main/resources/gui/fuel.yml").toFile());
         var messages=new Messages(language);var text=new MachineText(loaded.rules(),loaded.displays(),messages);
         for(String type:loaded.rules().types().keySet()) for(int level=1;level<=5;level++) {
             var m=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),type,level);
@@ -26,13 +27,16 @@ class MachineTextTest {
                 assertEquals("普通收集器[初级]",title);assertEquals(title,heading);
             } else {
                 assertEquals(1,title.split("Lv\\.",-1).length-1);assertEquals(title,heading);
-                String fuel=menu.getStringList("elements.F.lore").stream().map(s -> messages.render(s,variables))
+                assertFalse(String.join("",menu.getStringList("elements.F.lore")).contains("<fuel"));
+                variables.put("fuel_space",Component.text(loaded.rules().fuelSpace(m)));
+                variables.put("fuel_items",Component.text(m.fuel()/loaded.rules().fuelUnits(m)));
+                String fuel=fuelMenu.getStringList("elements.#.lore").stream().map(s -> messages.render(s,variables))
                         .peek(this::assertNoItalic).map(this::plain).reduce("",String::concat);
                 var limits=loaded.rules().level(m);
                 assertTrue(fuel.contains("每 "+limits.seconds()+" 秒 "+limits.count()+" 个"));
-                assertTrue(fuel.contains("每个 "+loaded.rules().fuelUnits(m)+" 能量"));
+                assertTrue(fuel.contains("每个燃料："+loaded.rules().fuelUnits(m)+" 能量"));
                 assertTrue(fuel.contains(loaded.rules().types().get(type).fuelPerItem()+" 能量 / 个"));
-                assertTrue(fuel.contains("使用燃料：燃料"));assertFalse(fuel.contains("<"));
+                assertTrue(fuel.contains("可用燃料：燃料"));assertFalse(fuel.contains("<"));
             }
         }
         assertNoItalic(messages.render("<#123456><italic>父<child></italic>",

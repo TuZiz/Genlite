@@ -30,7 +30,8 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
             if(name.equals("lang/zh_cn.yml")) HomeHologramMessages.apply(path,yaml,plugin.getResource(name));
             if(outputConfig || name.equals("gui/collector.yml")) PresentationMigration.menu(path,name,yaml,plugin.getResource(name));
             if(outputConfig) FuelMenuMigration.apply(path,name,yaml,plugin.getResource(name));
-            int expected=outputConfig?4:name.equals("gui/collector.yml")?3:name.equals("gui/fuel.yml")?1:(name.equals("warehouse.yml") || name.startsWith("gui/"))?2:1;
+            if(name.equals("gui/generator.yml") || name.equals("gui/fuel.yml")) FuelChestMigration.apply(path,name,yaml,plugin.getResource(name));
+            int expected=outputConfig?4:name.equals("gui/collector.yml")?3:(name.equals("warehouse.yml") || name.startsWith("gui/"))?2:1;
             if (yaml.getInt("schema-version")!=expected) throw new IllegalArgumentException(name+":schema-version="+yaml.get("schema-version")+" unsupported; original preserved");
             files.put(name,yaml);
         }
@@ -46,7 +47,7 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
             List<String> shape=gui.getStringList("shape");
             if (shape.isEmpty() || shape.size()>6 || shape.stream().anyMatch(row -> row.length()!=9)) throw new IllegalArgumentException("gui/"+menu+".yml:shape");
             for (char c:String.join("",shape).toCharArray()) if (c!=' ' && !gui.isConfigurationSection("elements."+c)) throw new IllegalArgumentException("gui/"+menu+".yml:elements."+c);
-            if(menu.equals("fuel")) FuelMenuMigration.validate(gui);
+            if(menu.equals("fuel")) FuelChestMigration.validate(gui);
             menus.put(menu,gui);
         }
         int slots=new ConfigDocument("warehouse.yml",files.get("warehouse.yml")).integer("slots",9,45);

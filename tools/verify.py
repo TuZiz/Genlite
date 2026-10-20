@@ -28,7 +28,7 @@ for path in list(PACK.rglob('*.yml'))+list((ROOT/'src/main/resources').rglob('*.
     if path.is_relative_to(PACK):
         for key,target in (('items',items),('blocks',blocks),('recipes',recipes)):
             for k,v in d.get(key,{}).items():assert k not in target;target[k]=v
-    elif path.name!='plugin.yml':assert d['schema-version']==(4 if path.as_posix().endswith(('lang/zh_cn.yml','gui/generator.yml')) else 3 if path.as_posix().endswith('gui/collector.yml') else 2 if path.name=='warehouse.yml' else 1)
+    elif path.name!='plugin.yml':assert d['schema-version']==(4 if path.as_posix().endswith(('lang/zh_cn.yml','gui/generator.yml')) else 3 if path.as_posix().endswith('gui/collector.yml') else 2 if path.name in ('warehouse.yml','fuel.yml') else 1)
     if path.parent.name=='gui' and path.is_relative_to(ROOT/'src/main/resources'):
         assert 1<=len(d['shape'])<=6
         for row in d['shape']:
