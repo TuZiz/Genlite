@@ -19,7 +19,7 @@ final class FuelChestClicks {
     }
     private boolean validFuel(Player p,Machine m,ItemStack stack) {
         if(stack==null || stack.isEmpty()) return false;
-        if(!items.build(p,engine.rules().fuelItem(m),1,0).isSimilar(stack)) {messages.send(p,"fuel-invalid");return false;}
+        if(!items.matchesFuel(p,engine.rules().fuelItem(m),stack)) {messages.send(p,"fuel-invalid");return false;}
         return true;
     }
     void click(InventoryClickEvent e,Player p,FuelSession s,BooleanSupplier current,Runnable refresh) {

@@ -63,7 +63,7 @@ public record MachineConfigurations(Rules rules, Map<String,MachineDisplay> disp
             BasicMaterialsMigration.apply(directory.resolve(e.getValue()),doc,e.getKey());
             UpgradeUnitMigration.apply(directory.resolve(e.getValue()),doc,e.getKey());
             HologramLayoutMigration.apply(directory.resolve(e.getValue()),doc);
-            ItemLoreMigration.apply(directory.resolve(e.getValue()),doc,e.getKey());
+            CeItemOwnershipMigration.apply(directory.resolve(e.getValue()),doc);
             PresentationMigration.machine(directory.resolve(e.getValue()),doc,e.getKey());
             ChineseItemMigration.machine(directory.resolve(e.getValue()),doc,e.getKey(),names);
             types.put(e.getKey(),MachineDefinition.rules(doc,e.getKey(),names));displays.put(e.getKey(),MachineDefinition.display(doc));

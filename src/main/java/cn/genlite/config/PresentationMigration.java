@@ -14,12 +14,6 @@ final class PresentationMigration {
     static void machine(Path path,ConfigDocument doc,String type) throws Exception {
         var yaml=doc.yaml();
         if (current(path,yaml)) return;
-        if (type.equals("resource_collector")) {
-            String name=yaml.getString("display.name","");
-            if (name.equals("<#89F7FE>✦ <#78FFD6><bold>资源收集器</bold> <#FFD700>[Lv.<level>]")
-                    || name.equals("<italic:false><#D7AF65>资源收集器 <#F6AD55>Lv.<level>"))
-                yaml.set("display.name","<#78FFD6><bold>普通收集器</bold><#FFD700>[初级]");
-        }
         var lines=new ArrayList<>(yaml.getStringList("hologram.lines"));
         // Only the duplicate stock heading is replaced; custom secondary lines remain intact.
         if (!lines.isEmpty() && List.of(

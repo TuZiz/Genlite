@@ -10,24 +10,8 @@ upgrade-item-version: 1
 id: 木材生成器
 base-value: 9
 
-# 物品名称与 Lore 独立配置；燃料为内部能量单位，拆下后显示实际保留数量。
-# Lore 支持 <level> <fuel> <fuel_capacity> <seconds> <count> <fuel_per_item> <mode> <stored_items> <used_slots> <slots>
-display:
-  lore-version: 3
-  name: '<#FFB75E>✦ <#FFD700><bold>木材生成器</bold> <#89F7FE>[Lv.<level>]'
-  lore:
-    - ' <#7F8C8D>❖ 生态林木采集'
-    - ''
-    - ' <#89F7FE>▪ <#C2E9FB>内部燃料：<#FFF6B7><fuel> <#7F8C8D>/ <#FFB75E><fuel_capacity> 能量'
-    - ' <#89F7FE>▪ <#C2E9FB>生产效率：<#A8FF78>每 <seconds> 秒 <count> 个 <#7F8C8D>(耗能 <fuel_per_item>/个)'
-    - ' <#89F7FE>▪ <#C2E9FB>默认输出：<#FFFFFF><mode>'
-    - ''
-    - ' <#90A4AE>无需树苗投入，消耗燃料自动培育并砍伐 <#FFB75E>橡木原木<#90A4AE>，'
-    - ' <#90A4AE>随等级提升可大幅缩短生产耗时并扩容。'
-    - ''
-    - ' <#FFDF00>▶ <#FFF9C4>[右键机器] <#E0F7FA>打开控制面板'
-    - ' <#FFDF00>▶ <#FFF9C4>[绑定工具] <#E0F7FA>右键连接至收集器'
-    - ' <#A8FF78>▶ <#78FFD6>[潜行+右键 / 镐挖掘] <#E0F7FA>安全拆除并保留数据'
+# 实际物品名称与 Lore 由 CraftEngine 定义。
+ce-item-version: 1
 
 # 全息字每秒更新一次；height 为相对方块底面的高度，范围 1..4 格。
 # 支持 <machine> <level> <status> <fuel> <fuel_capacity> <input> <seconds> <count> <value> <used_slots> <slots> <mode> <binding> <locked> <paused>

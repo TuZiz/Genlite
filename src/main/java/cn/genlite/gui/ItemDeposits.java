@@ -37,7 +37,8 @@ final class ItemDeposits {
             try {unit=items.build(p,id,1,0);} catch(Exception error) {messages.send(p,"unsupported-item");return;}
             if(!busy.add(user)) {messages.send(p,"busy");return;}
             ItemStack cursor=slot<0?p.getItemOnCursor():p.getInventory().getItem(slot);
-            if(cursor==null || cursor.isEmpty() || !cursor.isSimilar(unit)) {busy.remove(user);messages.send(p,source.kind()==ContainerStock.Kind.FUEL?"fuel-invalid":"unsupported-item");return;}
+            boolean matches=source.kind()==ContainerStock.Kind.FUEL?items.matchesFuel(p,id,cursor):cursor!=null && !cursor.isEmpty() && cursor.isSimilar(unit);
+            if(!matches) {busy.remove(user);messages.send(p,source.kind()==ContainerStock.Kind.FUEL?"fuel-invalid":"unsupported-item");return;}
             int capacity=source.kind()==ContainerStock.Kind.FUEL?engine.rules().fuelSpace(engine.snapshot().machines().get(source.id())):Integer.MAX_VALUE;
             int count=Math.min(capacity,Math.min(requested,cursor.getAmount()));if(count<=0) {busy.remove(user);messages.send(p,"full");return;}
             ItemStack held=cursor.clone();held.setAmount(count);cursor=cursor.clone();cursor.setAmount(cursor.getAmount()-count);

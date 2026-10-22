@@ -10,15 +10,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /** Use only on the player/region thread; never match translated names. */
 public final class CraftItems {
-    private final cn.genlite.display.MachineText text;
     private final cn.genlite.config.ItemNames names;
-    private final java.util.function.Supplier<cn.genlite.domain.WorldState> state;
     private final NamespacedKey levelKey;
     private final NamespacedKey sourceKey, tokenKey;
-    public CraftItems(JavaPlugin plugin,cn.genlite.display.MachineText text,java.util.function.Supplier<cn.genlite.domain.WorldState> state,cn.genlite.config.ItemNames names) {
+    public CraftItems(JavaPlugin plugin,cn.genlite.config.ItemNames names) {
         this.names=names;
-        this.text=text;
-        this.state=state;
         levelKey=new NamespacedKey(plugin,"machine-level");
         sourceKey=new NamespacedKey(plugin,"shell-source"); tokenKey=new NamespacedKey(plugin,"shell-token");
     }
@@ -38,7 +34,7 @@ public final class CraftItems {
             meta.getPersistentDataContainer().set(sourceKey,PersistentDataType.STRING,parcel.shellSource().toString());
             meta.getPersistentDataContainer().set(tokenKey,PersistentDataType.STRING,parcel.shellToken().toString());
         });
-        return parcel.shellSource()==null?item:decorate(item);
+        return item;
     }
     public String id(ItemStack stack) {
         if (stack==null || stack.isEmpty()) return "minecraft:air";
@@ -52,6 +48,16 @@ public final class CraftItems {
     }
     public String resolve(String value) {return names.resolve(value);}
     public String name(String id) {return names.name(id);}
+    /** Player thread only. CE fuel identity survives display changes and either give command. */
+    public boolean matchesFuel(Player player,String expected,ItemStack stack) {
+        if(stack==null || stack.isEmpty()) return false;
+        expected=names.resolve(expected);
+        String resolved=expected;
+        return fuelIdentityMatches(resolved,id(stack),credentials(stack).present(),() -> build(player,resolved,1,0).isSimilar(stack));
+    }
+    static boolean fuelIdentityMatches(String expected,String actual,boolean credentials,java.util.function.BooleanSupplier canonical) {
+        return !credentials && expected.equals(actual) && (expected.equals("genlite:fuel") || canonical.getAsBoolean());
+    }
     public ItemStack build(Player player,String id,int amount,int level) {
         id=names.resolve(id);
         ItemStack item;
@@ -66,28 +72,6 @@ public final class CraftItems {
         }
         item.setAmount(amount);
         if (level>0) item.editMeta(meta -> meta.getPersistentDataContainer().set(levelKey,PersistentDataType.INTEGER,level));
-        return decorate(item);
-    }
-    public ItemStack decorate(ItemStack item) {
-        String id=id(item);
-        if(!id.startsWith("genlite:")) return item;
-        if(id.equals("genlite:fuel")) {
-            item.editMeta(meta -> {
-                if(meta.hasItemName()) meta.itemName(cn.genlite.gui.Messages.nonItalic(meta.itemName()));
-                if(meta.hasLore()) meta.lore(meta.lore().stream().map(cn.genlite.gui.Messages::nonItalic).toList());
-            });
-            return item;
-        }
-        boolean machine=text.display(id.substring(8))!=null;
-        if(!machine && !id.equals("genlite:binding_tool")) return item;
-        var definition=CraftEngineItems.byId(id);
-        Material material=definition==null?null:Material.matchMaterial(definition.material().toString());
-        // Paper withType creates a replacement and preserves count/meta, including CE identity and shell PDC.
-        ItemStack result=material!=null && !material.isAir() && item.getType()!=material?item.withType(material):item;
-        if(!machine) return result;
-        String type=id.substring(8);int level=level(result);
-        var lore=text.lore(type,level,source(result),token(result),state.get());
-        result.editMeta(meta -> {meta.itemName(text.name(type,level));meta.lore(lore);});
-        return result;
+        return item;
     }
 }

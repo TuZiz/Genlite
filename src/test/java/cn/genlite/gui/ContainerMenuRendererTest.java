@@ -16,11 +16,11 @@ class ContainerMenuRendererTest {
     @Test void actualContainerParametersResolveCollectorNameAndKeepWarehouseCounts() throws Exception {
         var config=MachineConfigurations.read(Path.of("src/main/resources/genlite"));
         var language=load("lang/zh_cn.yml");var messages=new Messages(language);
-        var text=new MachineText(config.rules(),config.displays(),messages);
+        var text=new MachineText(config.rules(),config.displays(),messages,id -> Component.text("CE收集器"));
         var renderer=new ContainerMenuRenderer(null,null,messages,text);
         var collector=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),"resource_collector",1);
         Component title=messages.render(load("gui/collector.yml").getString("title"),renderer.variables(collector,27,1));
-        assertEquals("普通收集器[初级] · 1/27",plain(title));nonItalic(title);
+        assertEquals("CE收集器 · 1/27",plain(title));nonItalic(title);
         assertFalse(plain(title).contains("<machine>"));
         String output=System.getProperty("genlite.component-output");
         if(output!=null) {
@@ -40,11 +40,11 @@ class ContainerMenuRendererTest {
         var config=MachineConfigurations.read(Path.of("src/main/resources/genlite"));
         var messages=new Messages(load("lang/zh_cn.yml"));var displays=new HashMap<>(config.displays());
         var original=displays.get("resource_collector");
-        displays.put("resource_collector",new MachineDisplay("<#123456><italic>自定义收集器 <level></italic>",original.lore(),original.hologram()));
-        var renderer=new ContainerMenuRenderer(null,null,messages,new MachineText(config.rules(),displays,messages));
+
+        var renderer=new ContainerMenuRenderer(null,null,messages,new MachineText(config.rules(),displays,messages,id -> Component.text("CE自定义收集器")));
         var collector=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),"resource_collector",3);
         var title=messages.render(load("gui/collector.yml").getString("title"),renderer.variables(collector,27,0));
-        assertEquals("自定义收集器 3 · 0/27",plain(title));nonItalic(title);
+        assertEquals("CE自定义收集器 · 0/27",plain(title));nonItalic(title);
     }
     private YamlConfiguration load(String name) throws Exception {
         var yaml=new YamlConfiguration();yaml.load(Path.of("src/main/resources/"+name).toFile());return yaml;

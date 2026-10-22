@@ -8,4 +8,3 @@ categories:
     - genlite:iron_generator  # 铁生成器
     - genlite:resource_collector  # 普通收集器
     - genlite:binding_tool  # 绑定工具
-    - genlite:basic_upgrade_unit  # 初级升级单元

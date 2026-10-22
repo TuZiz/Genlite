@@ -1,17 +1,14 @@
 items:
-  genlite:basic_upgrade_unit:  # 初级升级单元
-    material: paper
-    data:
-      item_name: '<italic:false><#68C9B6>初级升级单元'
-      lore:
-        - '<italic:false><#94A3B8>用于原石、木材和铁生成器升级。'
-        - '<italic:false><#94A3B8>右键生成器，在菜单中点击升级。'
-        - '<italic:false><#64748B>升级只消耗此物品，数量以菜单显示为准。'
-    texture: genlite:item/basic_upgrade_unit
   genlite:binding_tool:  # 绑定工具
+    material: iron_pickaxe
     data:
-      item_name: '<italic:false><#68B9B1>绑定工具'
+      item_name: '<bold><gradient:#48CAE4:#0096C7>绑定工具</gradient></bold>'
+      lore:
+        - '<dark_gray>▪ <gray>功能工具'
+        - ''
+        - '<#72EFDD>✦ <#94A3B8>功能: <white>将生成器与对应节点进行绑定'
+        - ''
+        - '<#64748B>※ 详细绑定操作请参阅生成器使用指引'
       hide_tooltip:
         - attribute_modifiers
     model: genlite:item/binding_tool
-    material: iron_pickaxe

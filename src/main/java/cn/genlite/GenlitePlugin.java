@@ -48,8 +48,12 @@ public final class GenlitePlugin extends JavaPlugin {
         engine=new MachineEngine(new AtomicStateFile(files.storage()),files.rules(),getLogger());
         var actions=new MachineActions(files.rules(),dream::member);
         var messages=new Messages(files.language());
-        var text=new MachineText(files.rules(),files.displays(),messages);
-        items=new CraftItems(this,text,engine::snapshot,files.itemNames());
+        var text=new MachineText(files.rules(),files.displays(),messages, id -> {
+            var definition=net.momirealms.craftengine.bukkit.api.CraftEngineItems.byId(id);
+            if(definition==null) throw new IllegalStateException("CraftEngine missing item "+id);
+            return definition.buildBukkitItem().effectiveName();
+        });
+        items=new CraftItems(this,files.itemNames());
         transfers=new InventoryTransfers(this,tasks,engine,items,messages,dream::member);
         warehouse=new ContainerMenus(files.menus(),engine,dream,items,messages,transfers,tasks,text);
         menus=new MachineMenus(files.menus(),engine,actions,dream,items,messages,transfers,text,warehouse,tasks);
@@ -68,7 +72,6 @@ public final class GenlitePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(collectorParticles,this);
         getServer().getPluginManager().registerEvents(warehouse,this);
         getServer().getPluginManager().registerEvents(new AutomaticDeliveryListener(tasks,transfers),this);
-        getServer().getPluginManager().registerEvents(new MachineItemDisplayListener(items),this);
         homeHolograms=new HomeHologramControl(this,tasks,engine,dream,presence,messages);
         var command=new GenliteCommand(items,messages,transfers,engine,warehouse,homeHolograms);
         getCommand("genlite").setExecutor(command);getCommand("genlite").setTabCompleter(command);

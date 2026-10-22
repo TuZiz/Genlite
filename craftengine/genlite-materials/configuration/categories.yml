@@ -16,3 +16,4 @@ categories:
       - genlite:industrial_chip  # 晶片
       - genlite:refined_alloy  # 合金
       - genlite:fuel  # 燃料
+      - genlite:basic_upgrade_unit  # 初级升级单元

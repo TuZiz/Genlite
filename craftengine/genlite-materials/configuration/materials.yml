@@ -59,3 +59,15 @@ items:
     texture: genlite:item/fuel
     settings:
       fuel_time: 1600
+  genlite:basic_upgrade_unit:  # 初级升级单元
+    material: paper
+    data:
+      item_name: '<bold><gradient:#48CAE4:#52B788>初级升级单元</gradient></bold>'
+      lore:
+        - '<dark_gray>▪ <gray>升级材料'
+        - ''
+        - '<#72EFDD>✦ <#94A3B8>适用范围: <white>原石、木材、铁生成器'
+        - '<#72EFDD>✦ <#94A3B8>使用方式: <white>右键生成器并在菜单中升级'
+        - ''
+        - '<#64748B>※ 升级仅消耗此物品，具体数量见界面提示'
+    texture: genlite:item/basic_upgrade_unit

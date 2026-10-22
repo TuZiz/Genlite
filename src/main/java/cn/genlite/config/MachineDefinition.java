@@ -59,7 +59,7 @@ final class MachineDefinition {
         try {return names.resolve(doc.string(field));} catch(IllegalArgumentException error) {throw doc.invalid(field);}
     }
     static MachineDisplay display(ConfigDocument d) {
-        return new MachineDisplay(d.string("display.name"),d.lines("display.lore"),new MachineDisplay.Hologram(
+        return new MachineDisplay(new MachineDisplay.Hologram(
                 d.bool("hologram.enabled"),d.decimal("hologram.height",1,4),d.lines("hologram.lines"),
                 d.yaml().contains("hologram.scale")?d.decimal("hologram.scale",0.25,1.5):0.65));
     }

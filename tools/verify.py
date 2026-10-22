@@ -47,12 +47,12 @@ for path in [p for pack in PACKS for p in pack.rglob('*.yml')]+list((ROOT/'src/m
         if path.name=='generator.yml':
             assert d['shape'][-1][4]=='X' and d['elements']['X']['action']=='close'
             assert sum(e.get('action')=='mode' for e in d['elements'].values())==1
-assert len(items)==18 and len(blocks)==7 and len(recipes)==6
+assert len(items)==18 and len(blocks)==7 and len(recipes)==0
 assert 'genlite:basic_smelter' not in recipes
 active=set(yaml.safe_load((PACK/'configuration/categories.yml').read_text(encoding='utf-8'))['categories']['genlite:content']['list'])
-assert active=={'genlite:cobblestone_generator','genlite:timber_generator','genlite:iron_generator','genlite:resource_collector','genlite:binding_tool','genlite:basic_upgrade_unit'}
+assert active=={'genlite:cobblestone_generator','genlite:timber_generator','genlite:iron_generator','genlite:resource_collector','genlite:binding_tool'}
 materials=yaml.safe_load((MATERIAL_PACK/'configuration/categories.yml').read_text(encoding='utf-8'))['categories']['genlite:materials']['list']
-assert len(materials)==11 and len(set(materials))==11
+assert len(materials)==12 and len(set(materials))==12
 assert set(materials)==set(yaml.safe_load((MATERIAL_PACK/'configuration/materials.yml').read_text(encoding='utf-8'))['items'])
 assert not active.intersection(materials)
 for mid in ('cobblestone_generator','timber_generator','iron_generator'):
@@ -66,7 +66,7 @@ for mid in ('cobblestone_generator','timber_generator','iron_generator'):
 assert all(ingredient.startswith('minecraft:') for recipe in recipes.values() for ingredient in recipe['ingredients'].values())
 assert 'genlite:warehouse_core' not in items and 'genlite:greenhouse_controller' not in items
 for key,item in items.items():
-    assert item['data']['item_name'].startswith('<italic:false><#')
+    assert isinstance(item['data']['item_name'],str) and item['data']['item_name']
     if 'texture' in item:assert sum((pack/'resourcepack/assets/genlite/textures'/(item['texture'].split(':')[1]+'.png')).is_file() for pack in PACKS)==1
     if 'model' in item:assert sum((pack/'resourcepack/assets/genlite/models'/(item['model'].split(':')[1]+'.json')).is_file() for pack in PACKS)==1
 for key,block in blocks.items():

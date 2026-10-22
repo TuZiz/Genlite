@@ -15,7 +15,7 @@ class FuelMenuRendererTest {
     @Test void actualFuelParametersRenderNameCapacityAndProductionWithoutItalic() throws Exception {
         var loaded=MachineConfigurations.read(Path.of("src/main/resources/genlite"));
         var lang=load("lang/zh_cn.yml");var gui=load("gui/fuel.yml");var messages=new Messages(lang);
-        var renderer=new FuelMenuRenderer(gui,null,messages,new MachineText(loaded.rules(),loaded.displays(),messages),null);
+        var renderer=new FuelMenuRenderer(gui,null,messages,new MachineText(loaded.rules(),loaded.displays(),messages,id -> Component.text("CE机器")),null);
         for(String type:List.of("cobblestone_generator","timber_generator","iron_generator")) {
             var m=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),type,3).contents(7,0,0,Map.of());
             var vars=renderer.variables(m,loaded.rules());

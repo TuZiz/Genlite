@@ -26,7 +26,7 @@ for f in files:
     if f['path'].startswith('src/main/resources/genlite/'):
         d=yaml.safe_load(f['content'])
         existing={(e['path'],e['field']) for e in entries}
-        for field,value in [('display.name',d['display']['name'])]+[(f'display.lore.{i}',s) for i,s in enumerate(d['display']['lore'])]+[(f'hologram.lines.{i}',s) for i,s in enumerate(d['hologram']['lines'])]:
+        for field,value in [(f'hologram.lines.{i}',s) for i,s in enumerate(d['hologram']['lines'])]:
             if (f['path'],field) not in existing:entries.append({'path':f['path'],'field':field,'text':value})
 values={'machine':'原石生成器','level':'3','fuel':'71','fuel_capacity':'1536','buffer':'12','buffer_capacity':'192','input':'8',
         'seconds':'8','count':'100000000000000000000000000000000000000000000000000','value':'12','binding':'4ab3d012','used_slots':'4','slots':'27','fuel_per_item':'1','stored_items':'129','status':'工作中','mode':'传入中央仓库','locked':'是','paused':'否','item':'圆石','amount':'4'}

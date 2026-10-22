@@ -10,23 +10,8 @@ storage-version: 2
 id: 普通收集器
 base-value: 18
 
-# 物品名称与 Lore 独立配置；燃料为内部能量单位，拆下后显示实际保留数量。
-# Lore 支持 <level> <fuel> <fuel_capacity> <buffer> <buffer_capacity> <seconds> <count> <fuel_per_item> <mode> <stored_items> <used_slots> <slots>
-display:
-  lore-version: 3
-  name: '<#78FFD6><bold>普通收集器</bold><#FFD700>[初级]'
-  lore:
-    - ' <#7F8C8D>❖ 物流仓储终端'
-    - ''
-    - ' <#89F7FE>▪ <#C2E9FB>内部物品：<#FFD700><stored_items> 个'
-    - ' <#89F7FE>▪ <#C2E9FB>已用槽位：<#A8FF78><used_slots> <#7F8C8D>/ <#89F7FE><slots> <#7F8C8D>(每格上限 64 个)'
-    - ''
-    - ' <#90A4AE>自动汇集并存储周边生成器的产出物，'
-    - ' <#90A4AE>有效范围 <#FFB75E>8×8 <#90A4AE>且垂直高度差不超过 <#FFB75E>4 格<#90A4AE>。'
-    - ''
-    - ' <#FFDF00>▶ <#FFF9C4>[右键机器] <#E0F7FA>打开仓储与升级面板'
-    - ' <#FFDF00>▶ <#FFF9C4>[绑定工具] <#E0F7FA>右键与范围内生成器建立连接'
-    - ' <#A8FF78>▶ <#78FFD6>[潜行+右键 / 镐挖掘] <#E0F7FA>安全拆除并保留库存'
+# 实际物品名称与 Lore 由 CraftEngine 定义。
+ce-item-version: 1
 
 # 全息字每秒更新一次；height 为相对方块底面的高度，范围 1..4 格。
 # 支持 <machine> <level> <status> <fuel> <fuel_capacity> <buffer> <buffer_capacity> <input> <seconds> <count> <value> <used_slots> <slots> <mode> <binding> <locked> <paused>

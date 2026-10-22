@@ -19,7 +19,7 @@ class PresentationMigrationTest {
         yaml.setComments("display",List.of("保留中文注释"));yaml.set("custom",42);
         Files.writeString(path,yaml.saveToString());String before=Files.readString(path);
         var doc=ConfigDocument.load(path,"collector.yml");PresentationMigration.machine(path,doc,"resource_collector");
-        assertTrue(doc.yaml().getString("display.name").contains("普通收集器"));
+        assertTrue(doc.yaml().getString("display.name").contains("资源收集器"));
         assertEquals(List.of("<machine>","<#123456>自定义状态"),doc.yaml().getStringList("hologram.lines"));
         assertEquals(42,doc.yaml().getInt("custom"));assertTrue(Files.readString(path).contains("保留中文注释"));
         assertEquals(before,Files.readString(directory.resolve("collector.yml.presentation-v0.bak")));

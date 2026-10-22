@@ -11,39 +11,13 @@ public final class MachineText {
     private final Rules rules;
     private final Map<String,MachineDisplay> displays;
     private final Messages messages;
-    public MachineText(Rules rules,Map<String,MachineDisplay> displays,Messages messages) {
-        this.rules=rules;this.displays=Map.copyOf(displays);this.messages=messages;
+    private final java.util.function.Function<String,Component> itemNames;
+    public MachineText(Rules rules,Map<String,MachineDisplay> displays,Messages messages,java.util.function.Function<String,Component> itemNames) {
+        this.rules=rules;this.displays=Map.copyOf(displays);this.messages=messages;this.itemNames=itemNames;
     }
-    public MachineDisplay display(String type) { return displays.get(type); }
-    public Component name(String type,int level) {
-        return messages.render(display(type).name(),Map.of("level",Component.text(level)));
-    }
-    public List<Component> lore(String type,int level) {
-        return lore(type,level,null,null,WorldState.empty());
-    }
-    /** Packed contents come from the durable snapshot, never from a stale item tooltip or item counters. */
-    public List<Component> lore(String type,int level,UUID source,UUID token,WorldState state) {
-        Machine packed=source==null?null:state.machines().get(source);
-        if(packed==null || !packed.removed() || !packed.cleared() || token==null
-                || !token.equals(packed.shellToken()) || !type.equals(packed.type())) packed=null;
-        int actualLevel=packed==null?level:packed.level();
-        Rules.Type definition=rules.types().get(type);Rules.Level limits=definition.levels().get(actualLevel);
-        int fuel=packed==null?0:packed.fuel(),buffer=packed==null?0:packed.buffer();
-        var inventory=packed==null?Map.<String,Integer>of():packed.inventory();
-        Map<String,Component> values=new HashMap<>();
-        values.put("machine",name(type,actualLevel));
-        Map.ofEntries(Map.entry("level",actualLevel),Map.entry("fuel",fuel),
-                Map.entry("fuel_capacity",limits.fuelItems()*(definition.fuel()==null?0:definition.fuel().units())),
-                Map.entry("buffer",buffer),Map.entry("buffer_capacity",limits.bufferItems()),
-                Map.entry("seconds",limits.seconds()),Map.entry("count",limits.count()),
-                Map.entry("fuel_per_item",definition.fuelPerItem()),Map.entry("used_slots",rules.usedSlots(inventory)),
-                Map.entry("slots",limits.collectorSlots()),
-                Map.entry("stored_items",inventory.values().stream().mapToLong(Integer::longValue).sum()))
-                .forEach((key,value) -> values.put(key,Component.text(value.toString())));
-        // Unpacking intentionally starts in DROP mode, irrespective of the previous binding/output mode.
-        values.put("mode",messages.key("mode.drop"));
-        return display(type).lore().stream().map(line -> messages.render(line,values)).toList();
-    }
+    public MachineDisplay display(String type) {return displays.get(type);}
+    /** A CE-provided name used in menus/holograms; never applied to a physical item. */
+    public Component name(String type,int level) {return itemNames.apply("genlite:"+type);}
     public Map<String,Component> variables(Machine m,Map<UUID,Machine> machines,Set<UUID> active) {
         Rules.Level l=rules.level(m);Map<String,Component> v=new HashMap<>();
         v.put("machine",name(m.type(),m.level()));
