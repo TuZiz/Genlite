@@ -31,6 +31,7 @@ public record PluginFiles(Rules rules, Map<String,MachineDisplay> displays, Path
             if(outputConfig || name.equals("gui/collector.yml")) PresentationMigration.menu(path,name,yaml,plugin.getResource(name));
             if(outputConfig) FuelMenuMigration.apply(path,name,yaml,plugin.getResource(name));
             if(name.equals("gui/generator.yml") || name.equals("gui/fuel.yml")) FuelChestMigration.apply(path,name,yaml,plugin.getResource(name));
+            if(name.equals("gui/fuel.yml") || name.equals("lang/zh_cn.yml")) FuelInformationMigration.apply(path,name,yaml,plugin.getResource(name));
             int expected=outputConfig?4:name.equals("gui/collector.yml")?3:(name.equals("warehouse.yml") || name.startsWith("gui/"))?2:1;
             if (yaml.getInt("schema-version")!=expected) throw new IllegalArgumentException(name+":schema-version="+yaml.get("schema-version")+" unsupported; original preserved");
             files.put(name,yaml);

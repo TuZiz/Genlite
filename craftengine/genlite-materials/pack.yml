@@ -1,0 +1,7 @@
+# Genlite 材料独立资源；保留原物品 ID 与纹理命名空间。
+schema-version: 1
+name: '材料'
+author: 'Genlite'
+version: '1.0.0'
+description: '空岛经营材料与燃料'
+namespace: genlite

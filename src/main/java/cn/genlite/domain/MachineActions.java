@@ -45,7 +45,7 @@ public final class MachineActions {
     public void bind(WorldState.Draft d, UUID generatorId, UUID collectorId, UUID player) {
         Machine m=require(d,generatorId,player), c=require(d,collectorId,player);
         if (m.collectorType() || !c.collectorType() || !rules.inRange(m,c)) throw new IllegalArgumentException("range");
-        d.machines.put(m.id(),m.settings(m.level(),m.paused(),m.locked(),m.connected(),c.id()));
+        d.machines.put(m.id(),m.settings(m.level(),m.paused(),m.locked(),m.connected(),c.id()).output(OutputMode.COLLECTOR));
     }
     public void deposit(WorldState.Draft d, UUID id, UUID player, String kind, int amount, int expectedLevel) {
         Machine m=require(d,id,player);

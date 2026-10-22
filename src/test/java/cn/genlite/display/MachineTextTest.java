@@ -36,7 +36,7 @@ class MachineTextTest {
                 assertTrue(fuel.contains("每 "+limits.seconds()+" 秒 "+limits.count()+" 个"));
                 assertTrue(fuel.contains("每个燃料："+loaded.rules().fuelUnits(m)+" 能量"));
                 assertTrue(fuel.contains(loaded.rules().types().get(type).fuelPerItem()+" 能量 / 个"));
-                assertTrue(fuel.contains("可用燃料：燃料"));assertFalse(fuel.contains("<"));
+                assertTrue(fuel.contains("可用燃料：普通燃料[煤炭级]"));assertFalse(fuel.contains("<"));
             }
         }
         assertNoItalic(messages.render("<#123456><italic>父<child></italic>",

@@ -1,0 +1,18 @@
+# 材料分类；全部物品分类仍由 CraftEngine 自动汇总。
+schema-version: 1
+categories:
+  genlite:materials:
+    name: '<#D7AF65>材料'
+    icon: genlite:refined_alloy
+    list:
+      - genlite:mechanical_parts  # 铁片
+      - genlite:gear  # 铁环
+      - genlite:copper_coil  # 铜丝
+      - genlite:machine_frame  # 铁架
+      - genlite:energy_cell  # 能量石
+      - genlite:storage_module  # 木箱
+      - genlite:mana_shard  # 魔力碎片
+      - genlite:ancient_core  # 远古核心
+      - genlite:industrial_chip  # 晶片
+      - genlite:refined_alloy  # 合金
+      - genlite:fuel  # 燃料

@@ -12,6 +12,7 @@ public final class PrepareFuelMenus {
             Path path=root.resolve(name);var yaml=new YamlConfiguration();yaml.options().parseComments(true);yaml.load(path.toFile());
             FuelMenuMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
             if(name.equals("gui/generator.yml")) FuelChestMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
+            if(name.equals("lang/zh_cn.yml")) FuelInformationMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
         }
         Path path=root.resolve("gui/fuel.yml");
         if(!Files.exists(path)) {Files.createDirectories(path.getParent());try(var stream=PrepareFuelMenus.class.getResourceAsStream("/gui/fuel.yml")) {
@@ -19,6 +20,7 @@ public final class PrepareFuelMenus {
         }}
         var gui=new YamlConfiguration();gui.options().parseComments(true);gui.load(path.toFile());
         FuelChestMigration.apply(path,"gui/fuel.yml",gui,PrepareFuelMenus.class.getResourceAsStream("/gui/fuel.yml"));
+        FuelInformationMigration.apply(path,"gui/fuel.yml",gui,PrepareFuelMenus.class.getResourceAsStream("/gui/fuel.yml"));
         FuelChestMigration.validate(gui);
         System.out.println("Fuel menus prepared; no machine/player saves accessed.");
     }

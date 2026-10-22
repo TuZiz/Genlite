@@ -56,6 +56,8 @@ public final class MachineText {
             v.put("output_item",messages.label(rules.types().get(m.type()).output()));
             v.put("fuel_units",Component.text(rules.fuelUnits(m)));
             v.put("fuel_per_item",Component.text(rules.types().get(m.type()).fuelPerItem()));
+            long batchEnergy=(long)rules.types().get(m.type()).fuelPerItem()*l.count();
+            v.put("fuel_output",Component.text(m.fuel()/batchEnergy*l.count()));
         }
         v.put("status",messages.key("status."+Production.status(m,rules,machines,active)));
         v.put("mode",messages.key("mode."+m.mode().key()));

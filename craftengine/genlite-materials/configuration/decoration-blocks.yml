@@ -1,0 +1,111 @@
+# 可放置的装饰材料；无机器逻辑与储物界面，挖掘掉落原材料物品。
+schema-version: 1
+blocks:
+  genlite:machine_frame:
+    settings:
+      hardness: 2.0
+      resistance: 3.0
+      replaceable: false
+      push_reaction: block
+      can_occlude: false
+      is_suffocating: false
+      is_view_blocking: false
+      tags:
+        - minecraft:mineable/pickaxe
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: genlite:machine_frame
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        facing=north:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/machine_frame
+            y: 0
+        facing=east:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/machine_frame
+            y: 90
+        facing=south:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/machine_frame
+            y: 180
+        facing=west:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/machine_frame
+            y: 270
+      variants:
+        facing=north:
+          appearance: facing=north
+        facing=east:
+          appearance: facing=east
+        facing=south:
+          appearance: facing=south
+        facing=west:
+          appearance: facing=west
+  genlite:storage_module:
+    settings:
+      hardness: 2.0
+      resistance: 3.0
+      replaceable: false
+      push_reaction: block
+      can_occlude: false
+      is_suffocating: false
+      is_view_blocking: false
+      tags:
+        - minecraft:mineable/axe
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: item
+              item: genlite:storage_module
+    states:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        facing=north:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/storage_module
+            y: 0
+        facing=east:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/storage_module
+            y: 90
+        facing=south:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/storage_module
+            y: 180
+        facing=west:
+          auto_state: non_tintable_leaves
+          model:
+            path: genlite:block/storage_module
+            y: 270
+      variants:
+        facing=north:
+          appearance: facing=north
+        facing=east:
+          appearance: facing=east
+        facing=south:
+          appearance: facing=south
+        facing=west:
+          appearance: facing=west

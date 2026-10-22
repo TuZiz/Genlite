@@ -1,5 +1,6 @@
 # 前三行显示机器内尚未消耗的完整燃料；底行玻璃统一显示实时信息。
 schema-version: 2
+fuel-info-version: 1
 title: '<#FFB75E>燃料仓 <#7F8C8D>· <machine>'
 shape:
   - 'FFFFFFFFF'
@@ -20,6 +21,8 @@ elements:
       - '<#C2E9FB>产出物品：<output_item>'
       - '<#C2E9FB>产出效率：<#A8FF78>每 <seconds> 秒 <count> 个'
       - '<#C2E9FB>产出耗能：<#FFF6B7><fuel_per_item> 能量 / 个'
+      - '<#C2E9FB>预计还可生产：<#A8FF78><fuel_output> 个'
+      - '<#90A4AE>仅按当前燃料估算，需满足原料与存储条件'
       - ''
       - '<#FFF9C4>将燃料放入上方格子即可存储'
       - '<#C2E9FB>左键存取一组，右键放入一个或取出半组'

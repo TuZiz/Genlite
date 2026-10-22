@@ -16,9 +16,9 @@ public final class Messages {
         TagResolver[] resolvers=values.entrySet().stream().map(e -> Placeholder.component(e.getKey(),e.getValue())).toArray(TagResolver[]::new);
         return nonItalic(MiniMessage.miniMessage().deserialize(template,resolvers));
     }
-    private Component nonItalic(Component component) {
+    public static Component nonItalic(Component component) {
         return component.decoration(TextDecoration.ITALIC,false)
-                .children(component.children().stream().map(this::nonItalic).toList());
+                .children(component.children().stream().map(Messages::nonItalic).toList());
     }
     public Component text(String value) { return render(value,Map.of()); }
     public Component key(String key) {

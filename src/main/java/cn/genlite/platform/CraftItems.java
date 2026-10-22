@@ -71,6 +71,13 @@ public final class CraftItems {
     public ItemStack decorate(ItemStack item) {
         String id=id(item);
         if(!id.startsWith("genlite:")) return item;
+        if(id.equals("genlite:fuel")) {
+            item.editMeta(meta -> {
+                if(meta.hasItemName()) meta.itemName(cn.genlite.gui.Messages.nonItalic(meta.itemName()));
+                if(meta.hasLore()) meta.lore(meta.lore().stream().map(cn.genlite.gui.Messages::nonItalic).toList());
+            });
+            return item;
+        }
         boolean machine=text.display(id.substring(8))!=null;
         if(!machine && !id.equals("genlite:binding_tool")) return item;
         var definition=CraftEngineItems.byId(id);

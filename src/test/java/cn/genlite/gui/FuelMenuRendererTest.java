@@ -20,6 +20,10 @@ class FuelMenuRendererTest {
             var m=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),type,3).contents(7,0,0,Map.of());
             var vars=renderer.variables(m,loaded.rules());
             assertEquals(Integer.toString(loaded.rules().fuelSpace(m)),plain(vars.get("fuel_space")));
+            int batch=loaded.rules().level(m).count();
+            int cost=loaded.rules().types().get(type).fuelPerItem();
+            assertEquals(Integer.toString(7/(batch*cost)*batch),plain(vars.get("fuel_output")));
+            assertEquals("普通燃料[煤炭级]",plain(vars.get("fuel_item")));
             var title=messages.render(gui.getString("title"),vars);assertFalse(plain(title).contains("<machine>"));assertTrue(plain(title).contains("燃料仓"));
             check(title);
             for(String line:gui.getStringList("elements.#.lore")) {

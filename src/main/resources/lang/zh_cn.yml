@@ -3,6 +3,7 @@
 #   统一全服视觉色彩，移除斜体冗余标签
 # ==========================================
 schema-version: 4
+fuel-info-version: 1
 presentation-version: 1
 upgrade-item-version: 1
 fuel-menu-version: 1
@@ -62,7 +63,7 @@ cost-line: ' <#89F7FE>▪ <item> <#7F8C8D>×<#FFD700><amount>'
 upgrade-cost-line: ' <#89F7FE>▪ <item> <#C2E9FB>需 <#FFD700><amount> <#C2E9FB>个 <#7F8C8D>(拥有: <#A8FF78><owned><#7F8C8D>)'
 
 item-labels:
-  genlite:fuel: '<#FFB75E>燃料'
+  genlite:fuel: '<#FFB75E>普通燃料[煤炭级]'
   genlite:basic_upgrade_unit: '<#78FFD6>初级升级单元'
   minecraft:cobblestone: '<#E0F7FA>原石'
   minecraft:oak_log: '<#FFB75E>橡木原木'

@@ -52,11 +52,39 @@ class MachineActionsTest {
         assertThrows(IllegalArgumentException.class,() -> actions.withdraw(d,m.id(),TestRules.PLAYER,null,"output"));
         actions.withdraw(d,m.id(),TestRules.PLAYER,null,"fuel");assertEquals(5,d.machines.get(m.id()).fuel());assertEquals(2,d.parcels.size());
     }
-    @Test void bindDoesNotSilentlyChangeOutputMode() {
-        Machine a=TestRules.machine("cobblestone_generator",1,0),c=Machine.create(TestRules.pos(1,64,0),TestRules.HOME,TestRules.PLAYER,"resource_collector",1);
-        var d=new WorldState(1,Map.of(a.id(),a,c.id(),c),Map.of()).draft();actions.bind(d,a.id(),c.id(),TestRules.PLAYER);
-        assertFalse(d.machines.get(a.id()).connected());assertEquals(c.id(),d.machines.get(a.id()).collector());
-        actions.toggle(d,a.id(),TestRules.PLAYER,"mode");assertTrue(d.machines.get(a.id()).connected());
+    @Test void bindingFromEveryModeSelectsCollectorAndRoutesBufferedProducts() {
+        for(OutputMode mode:OutputMode.values()) {
+            Machine a=TestRules.machine("cobblestone_generator",1,13).contents(13,0,7,Map.of()).output(mode);
+            Machine c=Machine.create(TestRules.pos(1,64,0),TestRules.HOME,TestRules.PLAYER,"resource_collector",1);
+            var d=new WorldState(1,Map.of(a.id(),a,c.id(),c),Map.of()).draft();
+            actions.bind(d,a.id(),c.id(),TestRules.PLAYER);
+            var bound=d.machines.get(a.id());
+            assertTrue(bound.connected());assertEquals(OutputMode.COLLECTOR,bound.mode());assertEquals(c.id(),bound.collector());
+            assertEquals(13,bound.fuel());assertEquals(7,bound.buffer());
+            Production.transfer(d,rules,Set.of(a.id(),c.id()));
+            assertEquals(0,d.machines.get(a.id()).buffer());
+            assertEquals(7,d.machines.get(c.id()).inventory().get(rules.types().get(a.type()).output()));
+            assertTrue(d.parcels.isEmpty());assertTrue(d.warehouses.isEmpty());
+        }
+    }
+    @Test void rebindSelectsNewCollectorAndFailedBindingPreservesState() {
+        Machine a=TestRules.machine("cobblestone_generator",1,0);
+        Machine c=Machine.create(TestRules.pos(1,64,0),TestRules.HOME,TestRules.PLAYER,"resource_collector",1);
+        Machine next=Machine.create(TestRules.pos(2,64,0),TestRules.HOME,TestRules.PLAYER,"resource_collector",1);
+        Machine far=Machine.create(TestRules.pos(1000,64,0),TestRules.HOME,TestRules.PLAYER,"resource_collector",1);
+        var d=new WorldState(1,Map.of(a.id(),a,c.id(),c,next.id(),next,far.id(),far),Map.of()).draft();
+        actions.bind(d,a.id(),c.id(),TestRules.PLAYER);
+        actions.toggle(d,a.id(),TestRules.PLAYER,"mode");
+        Machine before=d.machines.get(a.id());
+        assertThrows(IllegalArgumentException.class,() -> actions.bind(d,a.id(),far.id(),TestRules.PLAYER));
+        assertThrows(IllegalArgumentException.class,() -> actions.bind(d,a.id(),next.id(),UUID.randomUUID()));
+        assertEquals(before,d.machines.get(a.id()));
+        actions.bind(d,a.id(),next.id(),TestRules.PLAYER);
+        assertEquals(next.id(),d.machines.get(a.id()).collector());
+        assertEquals(OutputMode.COLLECTOR,d.machines.get(a.id()).mode());
+        actions.toggle(d,a.id(),TestRules.PLAYER,"mode");
+        actions.bind(d,a.id(),next.id(),TestRules.PLAYER);
+        assertEquals(OutputMode.COLLECTOR,d.machines.get(a.id()).mode());
     }
     @Test void creativeFreshTemplateCanPlaceRepeatedlyWithoutCopyingFuelOrStock() {
         var d=WorldState.empty().draft();

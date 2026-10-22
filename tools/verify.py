@@ -7,12 +7,14 @@ from PIL import Image
 
 ROOT=Path(__file__).resolve().parents[1]
 PACK=ROOT/'craftengine/genlite'
+MATERIAL_PACK=ROOT/'craftengine/genlite-materials'
+PACKS=(PACK,MATERIAL_PACK)
 ASSETS=PACK/'resourcepack/assets/genlite'
 items={};blocks={};recipes={}
 item_names=yaml.safe_load((ROOT/'src/main/resources/物品名称.yml').read_text(encoding='utf-8'))['items']
 machine_files={'cobblestone_generator':'原石生成器','timber_generator':'木材生成器','iron_generator':'铁生成器','resource_collector':'普通收集器'}
 def item_id(value): return item_names.get(value,value)
-for path in list(PACK.rglob('*.yml'))+list((ROOT/'src/main/resources').rglob('*.yml')):
+for path in [p for pack in PACKS for p in pack.rglob('*.yml')]+list((ROOT/'src/main/resources').rglob('*.yml')):
     text=path.read_text(encoding='utf-8'); assert '\t' not in text,path
     for token in yaml.scan(text):
         assert not isinstance(token,(yaml.tokens.FlowMappingStartToken,yaml.tokens.FlowSequenceStartToken)),path
@@ -25,7 +27,7 @@ for path in list(PACK.rglob('*.yml'))+list((ROOT/'src/main/resources').rglob('*.
         elif node.tag=='tag:yaml.org,2002:str' and node.value.startswith('<'):
             assert node.style=="'",(path,node.value)
     check_quotes(yaml.compose(text))
-    if path.is_relative_to(PACK):
+    if any(path.is_relative_to(pack) for pack in PACKS):
         for key,target in (('items',items),('blocks',blocks),('recipes',recipes)):
             for k,v in d.get(key,{}).items():assert k not in target;target[k]=v
     elif path.name!='plugin.yml':assert d['schema-version']==(4 if path.as_posix().endswith(('lang/zh_cn.yml','gui/generator.yml')) else 3 if path.as_posix().endswith('gui/collector.yml') else 2 if path.name in ('warehouse.yml','fuel.yml') else 1)
@@ -45,10 +47,14 @@ for path in list(PACK.rglob('*.yml'))+list((ROOT/'src/main/resources').rglob('*.
         if path.name=='generator.yml':
             assert d['shape'][-1][4]=='X' and d['elements']['X']['action']=='close'
             assert sum(e.get('action')=='mode' for e in d['elements'].values())==1
-assert len(items)==18 and len(blocks)==5 and len(recipes)==6
+assert len(items)==18 and len(blocks)==7 and len(recipes)==6
 assert 'genlite:basic_smelter' not in recipes
 active=set(yaml.safe_load((PACK/'configuration/categories.yml').read_text(encoding='utf-8'))['categories']['genlite:content']['list'])
-assert active=={'genlite:cobblestone_generator','genlite:timber_generator','genlite:iron_generator','genlite:resource_collector','genlite:binding_tool','genlite:fuel','genlite:basic_upgrade_unit'}
+assert active=={'genlite:cobblestone_generator','genlite:timber_generator','genlite:iron_generator','genlite:resource_collector','genlite:binding_tool','genlite:basic_upgrade_unit'}
+materials=yaml.safe_load((MATERIAL_PACK/'configuration/categories.yml').read_text(encoding='utf-8'))['categories']['genlite:materials']['list']
+assert len(materials)==11 and len(set(materials))==11
+assert set(materials)==set(yaml.safe_load((MATERIAL_PACK/'configuration/materials.yml').read_text(encoding='utf-8'))['items'])
+assert not active.intersection(materials)
 for mid in ('cobblestone_generator','timber_generator','iron_generator'):
     item=items['genlite:'+mid]
     assert item['material']=='paper',('Client prediction requires a non-block item material',mid)
@@ -61,10 +67,19 @@ assert all(ingredient.startswith('minecraft:') for recipe in recipes.values() fo
 assert 'genlite:warehouse_core' not in items and 'genlite:greenhouse_controller' not in items
 for key,item in items.items():
     assert item['data']['item_name'].startswith('<italic:false><#')
-    if 'texture' in item:assert (ASSETS/'textures'/(item['texture'].split(':')[1]+'.png')).is_file()
-    if 'model' in item:assert (ASSETS/'models'/(item['model'].split(':')[1]+'.json')).is_file()
+    if 'texture' in item:assert sum((pack/'resourcepack/assets/genlite/textures'/(item['texture'].split(':')[1]+'.png')).is_file() for pack in PACKS)==1
+    if 'model' in item:assert sum((pack/'resourcepack/assets/genlite/models'/(item['model'].split(':')[1]+'.json')).is_file() for pack in PACKS)==1
 for key,block in blocks.items():
-    states=block['states'];assert len(states['variants'])==12
+    states=block['states']
+    if key in ('genlite:machine_frame','genlite:storage_module'):
+        assert items[key]['material']=='paper'
+        assert items[key]['behavior']=={'type':'block_item','block':key}
+        assert len(states['variants'])==4
+        assert block['loot']['pools'][0]['entries']==[{'type':'item','item':key}]
+        assert all(a['auto_state']=='non_tintable_leaves' for a in states['appearances'].values())
+        assert all((MATERIAL_PACK/'resourcepack/assets/genlite/models'/(a['model']['path'].split(':')[1]+'.json')).is_file() for a in states['appearances'].values())
+        continue
+    assert len(states['variants'])==12
     if key=='genlite:resource_collector':
         assert len({a['state'] for a in states['appearances'].values()})==12
         assert all('half=bottom,open=false' in a['state'] for a in states['appearances'].values())
@@ -74,12 +89,12 @@ for key,block in blocks.items():
     for variant,value in states['variants'].items():
         model=states['appearances'][value['appearance']]['model']['path']
         assert (ASSETS/'models'/(model.split(':')[1]+'.json')).is_file()
-for path in (ASSETS/'models').rglob('*.json'):
+for path in [p for pack in PACKS for p in (pack/'resourcepack/assets/genlite/models').rglob('*.json')]:
     model=json.loads(path.read_text(encoding='utf-8'))
-    if 'parent' in model:
-        assert (ASSETS/'models'/(model['parent'].split(':')[1]+'.json')).is_file()
+    if 'parent' in model and not model['parent'].startswith('minecraft:'):
+        assert any((pack/'resourcepack/assets/genlite/models'/(model['parent'].split(':')[1]+'.json')).is_file() for pack in PACKS)
     for texture in model.get('textures',{}).values():
-        assert texture.startswith('minecraft:block/') or (ASSETS/'textures'/(texture.split(':')[1]+'.png')).is_file()
+        assert texture.startswith('minecraft:block/') or any((pack/'resourcepack/assets/genlite/textures'/(texture.split(':')[1]+'.png')).is_file() for pack in PACKS)
     for part in model.get('elements',[]):assert all(0<=a<b<=16 for a,b in zip(part['from'],part['to']))
 for mid in ('cobblestone_generator','timber_generator','iron_generator','resource_collector','basic_smelter'):
     item=items['genlite:'+mid];assert 'texture' not in item
@@ -113,8 +128,8 @@ with zipfile.ZipFile(jar) as z:
     assert all(n in names for n in ('genlite/原石生成器.yml','genlite/普通收集器.yml','warehouse.yml','gui/warehouse.yml','gui/generator.yml','gui/collector.yml','gui/fuel.yml','lang/zh_cn.yml','plugin.yml'))
     assert 'gui/storage.yml' not in names
     assert not any(n.endswith(('WarehouseMenus.class','WarehouseSession.class','WarehouseActions.class')) for n in names)
-with Image.open(ASSETS/'textures/item/fuel.png') as im:
+with Image.open(MATERIAL_PACK/'resourcepack/assets/genlite/textures/item/fuel.png') as im:
     assert im.size==(32,32) and im.mode=='RGBA' and im.getchannel('A').getextrema()[0]==0 and im.getchannel('A').getextrema()[1]>=250
-result={'status':'passed','items':len(items),'blocks':len(blocks),'active_blocks':4,'legacy_smelter_only':True,'states':60,'models':len(list((ASSETS/'models').rglob('*.json'))),'recipes':len(recipes),'jar_bytes':jar.stat().st_size}
+result={'status':'passed','items':len(items),'blocks':len(blocks),'active_blocks':6,'legacy_smelter_only':True,'states':68,'models':len(list((ASSETS/'models').rglob('*.json'))),'recipes':len(recipes),'jar_bytes':jar.stat().st_size}
 path=ROOT/'target/verification/assets.json';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(result,indent=2),encoding='utf-8')
 print(json.dumps(result))
