@@ -52,6 +52,7 @@ public final class Production {
             items.merge(item, count, Math::addExact);
             draft.machines.put(collector.id(), collector.contents(collector.fuel(),collector.input(),collector.buffer(),items));
             draft.machines.put(m.id(),m.contents(m.fuel(),m.input(),m.buffer()-count,m.inventory()));
+            draft.count(m.home(),"genlite.transfer",count);
             transfers.add(new CollectorTransfer(m.id(),collector.id(),m.position(),collector.position(),count));
         }
         return List.copyOf(transfers);

@@ -12,6 +12,7 @@ public final class PrepareFuelMenus {
             Path path=root.resolve(name);var yaml=new YamlConfiguration();yaml.options().parseComments(true);yaml.load(path.toFile());
             FuelMenuMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
             if(name.equals("gui/generator.yml")) FuelChestMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
+            if(name.equals("gui/generator.yml")) StatusFuelMigration.apply(path,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
             if(name.equals("lang/zh_cn.yml")) FuelInformationMigration.apply(path,name,yaml,PrepareFuelMenus.class.getResourceAsStream("/"+name));
         }
         Path path=root.resolve("gui/fuel.yml");

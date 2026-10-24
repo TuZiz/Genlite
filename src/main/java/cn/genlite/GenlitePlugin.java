@@ -75,6 +75,32 @@ public final class GenlitePlugin extends JavaPlugin {
         homeHolograms=new HomeHologramControl(this,tasks,engine,dream,presence,messages);
         var command=new GenliteCommand(items,messages,transfers,engine,warehouse,homeHolograms);
         getCommand("genlite").setExecutor(command);getCommand("genlite").setTabCompleter(command);
+        getServer().getServicesManager().register(cn.genlite.api.GenliteQuestApi.class,new cn.genlite.api.GenliteQuestApi() {
+            public boolean ready() {return engine.ready();}
+            public java.util.Map<String,Long> counters() {return engine.snapshot().questCounters();}
+            public cn.genlite.api.GenliteQuestApi.TeachingMachine teachingMachine(java.util.UUID id) {
+                var m=engine.snapshot().machines().get(id);
+                return m==null || m.removed()?null:new cn.genlite.api.GenliteQuestApi.TeachingMachine(m.home(),m.type(),m.level());
+            }
+            public java.util.Map<String,Long> teachingSnapshot() {
+                var result=new java.util.HashMap<String,Long>(engine.snapshot().questCounters());
+                for(var machine:engine.snapshot().machines().values()) {
+                    if(machine.removed()) continue;
+                    String prefix=machine.home()+"|";
+                    result.merge(prefix+"genlite.level:"+machine.type(),(long)machine.level(),Math::max);
+                    result.put(prefix+"genlite.placed:"+machine.type(),1L);
+                    if(machine.collectorType()) result.put(prefix+"genlite.collector",1L);
+                }
+                return java.util.Map.copyOf(result);
+            }
+            public boolean hasGenerator(java.util.UUID home,java.util.Set<java.util.UUID> members) {
+                var s=engine.snapshot();
+                return s.machines().values().stream().anyMatch(m -> m.home().equals(home) && !m.collectorType())
+                    || s.parcels().values().stream().anyMatch(p -> members.contains(p.player()) && engine.rules().types().containsKey(p.item().replace("genlite:","")) && !p.item().equals("genlite:resource_collector"));
+            }
+        },this,org.bukkit.plugin.ServicePriority.Normal);
+        engine.questListener(counters -> getServer().getPluginManager().callEvent(new cn.genlite.api.GenliteCountersCommittedEvent(counters)));
+        getServer().getPluginManager().registerEvents(new cn.genlite.platform.ProductionPickup(this,engine,dream::member),this);
         engine.start().whenComplete((v,error) -> {
             if(error!=null) {getLogger().log(Level.SEVERE,"Genlite state load failed; refusing to overwrite saved data",error);tasks.global(() -> getServer().getPluginManager().disablePlugin(this));return;}
             tasks.global(() -> tasks.repeat(() -> {dream.refresh(engine);presence.refresh();drops.refresh();warehouse.refresh();menus.fuel().refresh();collectorParticles.refresh();}));
@@ -92,6 +118,7 @@ public final class GenlitePlugin extends JavaPlugin {
         if(tasks!=null) tasks.close();
         if(interactions!=null) interactions.clear();if(menus!=null) menus.clear();if(transfers!=null) transfers.clear();
         if(presence!=null) presence.clear();if(dismantling!=null) dismantling.clear();if(drops!=null) drops.clear();if(dream!=null) dream.clear();
+        getServer().getServicesManager().unregisterAll(this);
         if(engine!=null) engine.close();startup.shutdown();
     }
 }

@@ -8,6 +8,7 @@ presentation-version: 1
 upgrade-item-version: 1
 fuel-menu-version: 1
 fuel-chest-version: 1
+status-fuel-version: 1
 
 # 菜单标题：使用柔和金黄搭配青蓝等级标识
 title: '<machine>'
@@ -33,6 +34,10 @@ elements:
       - ' <#89F7FE>▪ <#C2E9FB>工作间隔：<#A8FF78><seconds> 秒'
       - ' <#89F7FE>▪ <#C2E9FB>单次产出：<#A8FF78><count>'
       - ' <#89F7FE>▪ <#C2E9FB>设施价值：<#FFD700><value>'
+      - ''
+      - ' <#89F7FE>▪ <#C2E9FB>剩余燃料：<#FFF6B7><fuel> / <fuel_capacity> 能量'
+      - ' <#89F7FE>▪ <#C2E9FB>预计还可生产：<#A8FF78><fuel_output> 个 <output_item>'
+      - ' <#90A4AE>仅按当前燃料估算，需满足原料与存储条件'
       - ''
       - ' <#FFDF00>▶ <#FFF9C4>[点击] 刷新面板数据'
     action: refresh

@@ -35,6 +35,7 @@ public final class MachineActions {
             if (collector==null || collector.removed() || !collector.collectorType() || !rules.inRange(m,collector))
                 throw new IllegalArgumentException("collector-required");
         }
+        if(action.equals("mode")) d.count(m.home(),"genlite.mode",1);
         d.machines.put(id,switch(action) {
             case "pause" -> m.settings(m.level(),!m.paused(),m.locked(),m.connected(),m.collector());
             case "lock" -> m.settings(m.level(),m.paused(),!m.locked(),m.connected(),m.collector());
@@ -45,15 +46,18 @@ public final class MachineActions {
     public void bind(WorldState.Draft d, UUID generatorId, UUID collectorId, UUID player) {
         Machine m=require(d,generatorId,player), c=require(d,collectorId,player);
         if (m.collectorType() || !c.collectorType() || !rules.inRange(m,c)) throw new IllegalArgumentException("range");
+        if(!c.id().equals(m.collector())) d.count(m.home(),"genlite.bind",1);
         d.machines.put(m.id(),m.settings(m.level(),m.paused(),m.locked(),m.connected(),c.id()).output(OutputMode.COLLECTOR));
     }
     public void deposit(WorldState.Draft d, UUID id, UUID player, String kind, int amount, int expectedLevel) {
+        if(amount<=0 || amount>1000000) throw new IllegalArgumentException("empty");
         Machine m=require(d,id,player);
         if (m.level()!=expectedLevel) throw new IllegalArgumentException("busy");
         Rules.Level level=rules.level(m);
         if (kind.equals("fuel")) {
             if (m.collectorType() || m.fuel()+amount*rules.fuelUnits(m)>level.fuelItems()*rules.fuelUnits(m)) throw new IllegalArgumentException("full");
             d.machines.put(id,m.contents(m.fuel()+amount*rules.fuelUnits(m),m.input(),m.buffer(),m.inventory()));
+            d.count(m.home(),"genlite.fuel",amount);
         } else if (kind.equals("input")) {
             if (rules.types().get(m.type()).input()==null || m.input()+amount>level.bufferItems()) throw new IllegalArgumentException("full");
             d.machines.put(id,m.contents(m.fuel(),m.input()+amount,m.buffer(),m.inventory()));

@@ -16,7 +16,8 @@ class VerifyPresentation {
     public static void main(String[] args) throws Exception {
         var loaded=MachineConfigurations.read(Path.of("src/main/resources/genlite"));
         var lang=new YamlConfiguration();lang.load(Path.of("src/main/resources/lang/zh_cn.yml").toFile());
-        var messages=new Messages(lang);var text=new MachineText(loaded.rules(),loaded.displays(),messages);
+        var messages=new Messages(lang);var text=new MachineText(loaded.rules(),loaded.displays(),messages,
+                id -> Component.text("CE机器",net.kyori.adventure.text.format.TextColor.color(0xD7AF65)));
         var output=new JsonArray();
         for(String file:Files.readAllLines(Path.of(args[0]))) {
             if(!file.endsWith(".yml")) continue;

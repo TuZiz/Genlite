@@ -46,6 +46,8 @@ public final class ShellDrops {
                         }
                         if(output) world.dropItem(location,items.parcel(null,parcel),entity -> {
                             entity.setVelocity(new org.bukkit.util.Vector(0,0.16,0));entity.setPickupDelay(10);
+                            var machine=engine.snapshot().machines().values().stream().filter(m -> m.position().equals(parcel.dropPosition())).findFirst().orElse(null);
+                            if(machine!=null) ProductionPickup.tag(entity,plugin,parcel.id(),machine.home());
                         });
                         else world.dropItemNaturally(location,items.parcel(null,parcel));
                         engine.transact(d -> {d.parcels.remove(parcel.id());return null;});

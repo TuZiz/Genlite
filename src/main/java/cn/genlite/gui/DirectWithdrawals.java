@@ -58,7 +58,13 @@ final class DirectWithdrawals {
             catch(Exception deliveryError) {
                 busy.remove(user);plugin.getLogger().log(Level.SEVERE,"Delivery uncertain; quarantined parcel="+parcel.id()+", player="+user,deliveryError);return;
             }
-            engine.transact(d -> {d.parcels.remove(parcel.id());return null;}).whenComplete((v,ackError) -> {
+            engine.transact(d -> {
+                if(d.parcels.remove(parcel.id())!=null && source!=null && source.kind()==ContainerStock.Kind.COLLECTOR) {
+                    Machine machine=d.machines.get(source.id());
+                    if(machine!=null) d.count(machine.home(),"genlite.extract",parcel.amount());
+                }
+                return null;
+            }).whenComplete((v,ackError) -> {
                 busy.remove(user);
                 if(ackError!=null) plugin.getLogger().log(Level.SEVERE,"Delivered parcel ACK failed; do not replay="+parcel.id(),ackError);
                 else tasks.player(player,() -> {refresh.run();recover(player);},() -> {});

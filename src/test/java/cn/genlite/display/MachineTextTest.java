@@ -19,12 +19,20 @@ class MachineTextTest {
         var fuelMenu=new YamlConfiguration();fuelMenu.load(Path.of("src/main/resources/gui/fuel.yml").toFile());
         var messages=new Messages(language);var text=new MachineText(loaded.rules(),loaded.displays(),messages,id -> Component.text("CE机器"));
         for(String type:loaded.rules().types().keySet()) for(int level=1;level<=5;level++) {
-            var m=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),type,level);
+            var m=Machine.create(new Position(UUID.randomUUID(),"test:world",0,64,0),UUID.randomUUID(),UUID.randomUUID(),type,level)
+                    .contents(type.equals("resource_collector")?0:35,0,0,Map.of());
             var variables=text.variables(m,Map.of(m.id(),m),Set.of(m.id()));
             String title=plain(messages.render(menu.getString("title"),variables));
             String heading=plain(text.hologram(m,Map.of(m.id(),m),Set.of(m.id()))).split("\n")[0];
             assertEquals(title,heading);
             if(!m.collectorType()) {
+                String status=menu.getStringList("elements.S.lore").stream().map(s -> messages.render(s,variables))
+                        .peek(this::assertNoItalic).map(this::plain).reduce("",String::concat);
+                int batch=loaded.rules().level(m).count();
+                int cost=loaded.rules().types().get(type).fuelPerItem();
+                assertTrue(status.contains("剩余燃料：35 / "));
+                assertTrue(status.contains("预计还可生产："+(35/(batch*cost)*batch)+" 个 "+plain(messages.label(loaded.rules().types().get(type).output()))));
+                assertFalse(status.matches(".*<[a-z_]+>.*"));
                 assertFalse(String.join("",menu.getStringList("elements.F.lore")).contains("<fuel"));
                 variables.put("fuel_space",Component.text(loaded.rules().fuelSpace(m)));
                 variables.put("fuel_items",Component.text(m.fuel()/loaded.rules().fuelUnits(m)));

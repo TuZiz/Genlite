@@ -12,6 +12,8 @@ public final class MachineEngine implements AutoCloseable {
     private final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor(r -> {
         Thread t = new Thread(r,"Genlite-state-io"); t.setDaemon(false); return t;
     });
+    private volatile java.util.function.Consumer<Map<String,Long>> questListener = ignored -> {};
+    public void questListener(java.util.function.Consumer<Map<String,Long>> listener) { questListener=listener; }
     private final AtomicStateFile storage;
     private final Logger log;
     private final Rules rules;
@@ -70,7 +72,11 @@ public final class MachineEngine implements AutoCloseable {
     }
     private void commit(WorldState next) {
         if (next.equals(state)) return;
-        try { storage.write(next); state=next; }
+        try {
+            boolean changed=!next.questCounters().equals(state.questCounters());
+            storage.write(next); state=next;
+            if(changed && !closed) { try {questListener.accept(next.questCounters());} catch(Exception eventError) {log.log(Level.WARNING,"Quest counter notification failed; durable snapshot available for replay",eventError);} }
+        }
         catch (Exception e) {
             faulted=true; ready=false;
             log.log(Level.SEVERE,"Genlite state save failed; original preserved; production frozen",e);
@@ -96,7 +102,10 @@ public final class MachineEngine implements AutoCloseable {
                     due.put(m.id(),now+interval); continue;
                 }
                 if (now>=deadline) {
-                    draft.machines.put(m.id(),Production.generate(m,rules));
+                    Machine generated=Production.generate(m,rules);
+                    draft.machines.put(m.id(),generated);
+                    int produced=generated.buffer()-m.buffer();
+                    if(produced>0) draft.count(m.home(),"genlite.produce:"+rules.types().get(m.type()).output(),produced);
                     due.put(m.id(),now+interval);
                 }
             }

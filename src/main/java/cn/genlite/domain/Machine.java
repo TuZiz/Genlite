@@ -44,6 +44,6 @@ public record Machine(UUID id, Position position, UUID home, UUID owner, String 
     }
     public Machine unpack(Position p,UUID home,UUID player) {
         return new Machine(UUID.randomUUID(),p,home,player,type,level,fuel,input,buffer,paused,locked,
-                false,null,inventory,1,0,false,false,null,OutputMode.DROP);
+                mode()==OutputMode.COLLECTOR,collector,inventory,1,0,false,false,null,mode());
     }
 }
